@@ -1,5 +1,7 @@
+import { getPublicSiteRoot } from "@/lib/site-url";
+
 export function SiteJsonLd() {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const base = getPublicSiteRoot();
   const payload = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",

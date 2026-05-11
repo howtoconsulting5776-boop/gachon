@@ -2,10 +2,7 @@ import type { MetadataRoute } from "next";
 import { listPosts } from "@/lib/data/posts";
 import { MOCK_FACULTY, MOCK_LABS } from "@/lib/mock-data";
 import { communityNoticePath } from "@/lib/post-path";
-
-function siteRoot(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
-}
+import { getPublicSiteRoot } from "@/lib/site-url";
 
 const STATIC_PATHS = [
   "/",
@@ -35,7 +32,7 @@ const STATIC_PATHS = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const root = siteRoot();
+  const root = getPublicSiteRoot();
   const now = new Date();
 
   const staticEntries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => ({

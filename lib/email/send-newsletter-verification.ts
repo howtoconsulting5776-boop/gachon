@@ -1,11 +1,12 @@
 import { Resend } from "resend";
+import { getPublicSiteRoot } from "@/lib/site-url";
 
 export function isResendConfigured(): boolean {
   return Boolean(process.env.RESEND_API_KEY?.trim());
 }
 
 function siteBaseUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+  return getPublicSiteRoot();
 }
 
 export async function sendNewsletterVerificationEmail(
