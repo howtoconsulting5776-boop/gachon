@@ -21,6 +21,8 @@
     "lint": "next lint",
     "deploy": "npx vercel@latest --prod",
     "deploy:preview": "npx vercel@latest",
+    "vercel:login": "npx vercel@latest login",
+    "vercel:link": "npx vercel@latest link",
     "images:lab-covers": "node scripts/fetch-lab-covers.mjs",
     "images:optimize": "node scripts/optimize-public-images.mjs",
     "github:publish": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-to-github.ps1",
