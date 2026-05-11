@@ -29,8 +29,11 @@ if (-not $gh) {
   exit 1
 }
 
-& $gh auth status 2>$null
-if ($LASTEXITCODE -ne 0) {
+$ErrorActionPreference = "Continue"
+$null = & $gh auth status 2>&1
+$authExit = $LASTEXITCODE
+$ErrorActionPreference = "Stop"
+if ($authExit -ne 0) {
   Write-Host @"
 
 GitHub 로그인이 필요합니다. PowerShell에서 한 번 실행하세요:
