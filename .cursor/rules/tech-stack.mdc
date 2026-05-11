@@ -1,0 +1,57 @@
+---
+description: 기술 스택과 프로젝트 구조 규칙 (항상 적용)
+alwaysApply: true
+---
+
+# 기술 스택
+
+| 영역 | 선택 |
+|---|---|
+| Framework | **Next.js 14+ (App Router)** + TypeScript |
+| Styling | **Tailwind CSS** + shadcn/ui + lucide-react |
+| Font | Pretendard Variable (한글) + Inter (영문) |
+| State | Zustand(client) + TanStack Query(server) |
+| Form | react-hook-form + zod |
+| Animation | Framer Motion (의미 있을 때만, 200~300ms) |
+| ORM/DB | Prisma + PostgreSQL (Supabase) |
+| Auth | NextAuth.js |
+| Email | Resend |
+| Hosting | Vercel + Supabase |
+
+## 저장소 레이아웃
+
+- Next.js 앱 루트는 **이 워크스페이스 루트**(`가천대/`, `package.json`과 `app/` 동위)이다.
+- PRD·기획 문서(PDF/Markdown)는 루트에 둘 수 있으며, 빌드 대상에서 제외하려면 필요 시 `next.config`에서 무시 설정.
+
+## 디렉터리 규약
+
+```
+app/                  # App Router 페이지
+  (public)/           # 공개 페이지 그룹
+  admin/              # /admin (NextAuth 가드)
+  api/v1/             # 모든 API는 /api/v1 prefix
+components/
+  layout/             # Header, Footer
+  sections/           # 페이지 섹션 (Hero, LabsQuickView 등)
+  ui/                 # shadcn 기반 공용 UI
+  admin/              # 어드민 전용
+lib/
+  utils.ts            # cn() 등 유틸
+  api/                # fetch 래퍼
+  mock-data.ts        # 더미 데이터 (FE 단계)
+types/index.ts        # 공통 타입
+```
+
+## URL 정책
+
+- 영문 **kebab-case** 슬러그 (`/labs/ai-tech-edu`, `/admissions/scholarships`)
+- 게시글: `/community/notice/[id]-[slug]`
+- 한글 슬러그 사용 금지
+
+## 코드 작성 규칙
+
+- 모든 컴포넌트는 함수형 + TypeScript `interface`로 props 정의
+- `'use client'`는 인터랙션이 필요한 경우에만 (서버 컴포넌트 우선)
+- 한글 텍스트가 들어가는 블록에는 `break-keep` 클래스 사용
+- 의존성을 임의로 추가하지 말고, 위 표의 라이브러리를 우선 활용
+- 반응형은 **모바일 우선** (360px → 1440px), `sm md lg xl` 순으로 작성

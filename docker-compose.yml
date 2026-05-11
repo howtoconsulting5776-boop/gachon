@@ -1,0 +1,16 @@
+# 로컬 개발용 PostgreSQL (Supabase만 쓰면 이 파일은 실행하지 않아도 됩니다)
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: gachon
+      POSTGRES_PASSWORD: gachon_dev
+      POSTGRES_DB: educonsulting
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

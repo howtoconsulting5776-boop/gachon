@@ -1,0 +1,53 @@
+---
+description: 컬러·타이포·간격·모션 등 디자인 시스템 토큰
+globs: **/*.{tsx,ts,css}
+alwaysApply: false
+---
+
+# 디자인 시스템
+
+## 컬러 토큰
+
+```
+Primary (Gachon Navy)
+  navy-50  #E8EEF5  navy-100 #C7D3E5  navy-300 #6F8AB3
+  navy-500 #002C62  ← Brand Primary
+  navy-700 #001E45  navy-900 #000F22
+
+Secondary (Accent Gold)
+  gold-500 #C9A86A  gold-700 #8E7544
+
+Semantic
+  success #10B981  warning #F59E0B
+  error   #EF4444  info    #3B82F6
+```
+
+- Tailwind에서는 `primary-50 ~ primary-900`, `secondary-500` 등 시맨틱 토큰 사용
+- 하드코딩된 HEX 금지 — 항상 토큰으로
+
+## 타이포그래피 (모바일 / 데스크톱)
+
+- H1 32/40 → 48/56, weight 700
+- H2 24/32 → 36/44, weight 700
+- H3 20/28 → 28/36, weight 600
+- Body 16/24, weight 400
+- Caption 14/20, weight 400
+
+## 간격·라운드·그림자
+
+- 4px 그리드 (`space-1 = 4px`)
+- 라운드: 4 / 8 / 12 / 16px
+- 그림자: subtle / default / elevated / dramatic 4단계
+- 카드 호버: `-translate-y-1` + 그림자 강화, `transition-all duration-300`
+
+## 모션 원칙
+
+- 의미 있을 때만, 200~300ms
+- 페이지 전환은 Fade 또는 subtle Slide
+- 스크롤 진입 시 카드 페이드인 (stagger 0.15s)
+- `prefers-reduced-motion` 사용자에게는 모션 최소화 (필수)
+
+## 반응형 브레이크포인트
+
+- Mobile 360–767 / Tablet 768–1023 / Desktop 1024–1439 / Large 1440+
+- 최대 콘텐츠 너비 1280px (`max-w-screen-xl`)

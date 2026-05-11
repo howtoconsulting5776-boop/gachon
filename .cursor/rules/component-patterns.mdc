@@ -1,0 +1,50 @@
+---
+description: React/Next 컴포넌트 작성 패턴과 접근성 표준
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# 컴포넌트 패턴
+
+## 기본 골격
+
+- 함수형 컴포넌트 + `interface Props` 명시 (any 금지)
+- 서버 컴포넌트 기본, 인터랙션 필요한 경우에만 `'use client'`
+- 클라이언트 컴포넌트에서 `useEffect`로 시작하는 hydration mismatch 방지 위해
+  필요 시 `const [mounted, setMounted] = useState(false)` 패턴 사용
+- 클래스 결합은 `cn()` 유틸 사용 (clsx + tailwind-merge)
+
+## 폼
+
+- `react-hook-form` + `zod` 스키마 일원화
+- 입학 상담 폼 필수 필드는 **3개 이내** (이름·연락처·이메일)
+- 제출 버튼은 로딩·비활성 상태 표시
+- 서버 응답 후 toast로 결과 알림
+
+## 한글 텍스트
+
+- 본문·헤드라인 컨테이너에 `break-keep` 적용
+- 줄바꿈 강제(`<br/>`)는 피하고 컨테이너 너비로 자연 줄바꿈 유도
+
+## 접근성 (WCAG 2.1 AA / KWCAG 2.2)
+
+- 모든 인터랙티브 요소 **키보드 접근 가능**
+- 모달·드로어: `role="dialog"` `aria-modal="true"`, ESC 닫기, focus trap
+- 폼 input은 `<label htmlFor>` 연결, 에러는 `aria-describedby`
+- 색상에만 의존하는 정보 전달 금지 — 아이콘·텍스트 병기
+- 모든 `<img>`에 의미 있는 `alt`, 장식 이미지는 `alt=""`
+- 본문 명도 대비 4.5:1 이상
+- 스킵 네비게이션 링크 제공 (`레이아웃에 #main 링크`)
+- focus-visible 스타일 명확히
+
+## 이미지
+
+- `next/image` 사용, 폭/높이 명시, 모바일 우선 사이즈
+- 1차에서는 `/placeholder.svg?height=H&width=W` 패턴 (일괄 교체 가능)
+- WebP/AVIF 우선, 지연 로딩 기본
+
+## 성능
+
+- 클라이언트 번들에 큰 라이브러리 직접 import 금지 — 동적 import 검토
+- 초기 JS ≤ 200KB(gzip) 목표
+- 컴포넌트 단위로 Skeleton 로딩 UI 제공

@@ -1,0 +1,56 @@
+---
+description: 개인정보·보안·법적 컴플라이언스 규칙
+globs: **/*.{ts,tsx,prisma}
+alwaysApply: false
+---
+
+# 데이터 & 보안
+
+## PII (개인정보) 처리
+
+- `Inquiries.phone`, `EventRegistrations.phone`, `Users.phone`은
+  **AES-256으로 암호화하여 `phone_enc` 컬럼에 저장**. 평문 저장 금지.
+- 어드민 UI에서 전화번호는 기본 마스킹 (`010-****-1234`),
+  평문 노출은 `admin` 권한 + 감사로그 기록 후에만.
+- IP는 해시(`ip_hash`)로 저장. raw IP 장기 보관 금지.
+
+## 보존 기간 (자동 파기 잡)
+
+- `Inquiries.phone_enc`: 수집 후 **3년** 보관 후 파기 (개인정보보호법)
+- `AdminAuditLogs`: **5년**
+- `Users.deleted_at`이 30일 경과 → PII 영구 파기 (소프트 삭제)
+
+## 동의 처리
+
+- 입학 상담 폼: `privacy_consent`(필수), `marketing_consent`(선택) 분리
+- 동의 문구는 PRD §12.2 문구를 그대로 사용. 임의 변경 금지.
+
+## 비밀번호·세션
+
+- bcrypt cost **12 이상**
+- 로그인 실패 **5회**시 30분 잠금
+- 세션 JWT는 httpOnly / secure / sameSite=lax, 30일 만료
+
+## OWASP 대응
+
+- SQL 인젝션: Prisma ORM만 사용. raw SQL은 검토 후 매개변수 바인딩
+- XSS: 사용자 입력 HTML은 **DOMPurify**로 sanitize
+- CSRF: NextAuth 기본 보호 유지
+- 업로드: 화이트리스트 `.jpg .jpeg .png .webp .pdf`,
+  이미지 ≤ 5MB, PDF ≤ 20MB, 서버측 MIME 검증
+
+## 스팸·악용 방지
+
+- 모든 공개 POST 폼에 **reCAPTCHA v3** 적용
+- 레이트 리미팅(api-conventions 룰 참조)
+
+## 로깅
+
+- 비밀번호·토큰·전화번호 평문은 절대 로그에 남기지 않음
+- 관리자 변경 작업은 `AdminAuditLogs(action, target, diff, ip)` 기록
+- 에러는 Sentry로 전송 (PII scrubbing 설정 유지)
+
+## 헤더
+
+- HSTS, X-Frame-Options DENY, X-Content-Type-Options nosniff,
+  Referrer-Policy strict-origin-when-cross-origin, 정교한 CSP

@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  // Supabase: Transaction pooler(6543) 등 — 런타임·배포용
+  url       = env("DATABASE_URL")
+  // Supabase: Direct(5432) — prisma db push / migrate 용 (대시보드 Prisma 스니펫과 동일)
+  directUrl = env("DIRECT_URL")
+}
+
+enum PostCategory {
+  notice
+  board
+  qna
+}
+
+/// 공지·게시판·Q&A 공통 (프론트 MockPost와 대응)
+model Post {
+  id          String       @id
+  /// 공개 URL: `/community/notice/[publicSlug]` (PRD id-slug 형태)
+  publicSlug  String       @unique @map("public_slug") @db.VarChar(255)
+  category    PostCategory
+  title       String
+  excerpt     String       @db.Text
+  content     String?      @db.Text
+  author      String?
+  publishedAt DateTime     @default(now()) @map("published_at")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  @@index([category, publishedAt(sort: Desc)])
+  @@map("posts")
+}
+
+model AdmissionInquiry {
+  id               String   @id @default(cuid())
+  name             String
+  phone            String
+  email            String
+  interestLab      String?  @map("interest_lab")
+  message          String?  @db.Text
+  privacyConsent   Boolean  @map("privacy_consent")
+  marketingConsent Boolean  @default(false) @map("marketing_consent")
+  sourceIp         String?  @map("source_ip") @db.VarChar(45)
+  status           String   @default("new") @map("status") @db.VarChar(32)
+  adminNotes       String?  @map("admin_notes") @db.Text
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt(sort: Desc)])
+  @@index([status])
+  @@map("admission_inquiries")
+}
+
+model NewsletterSubscriber {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  verified     Boolean   @default(false)
+  active       Boolean   @default(true)
+  verifyToken  String?   @unique @map("verify_token") @db.VarChar(64)
+  unsubToken   String    @unique @map("unsub_token") @db.VarChar(64)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  verifiedAt   DateTime? @map("verified_at")
+
+  @@map("newsletter_subscribers")
+}
+
+/// 관리자 변경 추적 (API 규약)
+model AdminAuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?  @map("actor_id")
+  action    String   @db.VarChar(120)
+  resource  String   @db.VarChar(120)
+  diff      Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt(sort: Desc)])
+  @@map("admin_audit_logs")
+}
+
+enum EventType {
+  online
+  offline
+  hybrid
+}
+
+/// 설명회·행사 (목업 MOCK_EVENTS id와 동기화)
+model Event {
+  id             String              @id
+  title          String
+  type           EventType
+  startAt        DateTime            @map("start_at")
+  location       String?
+  capacity       Int?
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
+  registrations  EventRegistration[]
+
+  @@index([startAt(sort: Asc)])
+  @@map("events")
+}
+
+model EventRegistration {
+  id        String   @id @default(cuid())
+  eventId   String   @map("event_id")
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  phone     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([eventId, email])
+  @@index([eventId])
+  @@map("event_registrations")
+}

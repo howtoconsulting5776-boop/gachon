@@ -1,0 +1,59 @@
+---
+description: Next.js API Routes 공통 규약 (응답 포맷·인증·레이트리밋)
+globs: app/api/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# API 규약
+
+## 버전·경로
+
+- 모든 API는 `/api/v1/...` prefix
+- 리소스명은 복수형 kebab-case (`/api/v1/admission-schedule`)
+
+## 응답 포맷
+
+성공:
+```json
+{ "success": true, "data": { }, "error": null,
+  "meta": { "page": 1, "limit": 10, "total": 42 } }
+```
+
+에러:
+```json
+{ "success": false, "data": null,
+  "error": { "code": "INQUIRY_VALIDATION_FAILED",
+             "message": "전화번호 형식이 올바르지 않습니다.",
+             "details": { "field": "phone" } } }
+```
+
+- HTTP 상태 코드도 의미에 맞게 사용 (400/401/403/404/409/429/500)
+- 에러 메시지는 **한국어**, 코드는 SCREAMING_SNAKE_CASE
+
+## 인증
+
+- NextAuth JWT, `Authorization: Bearer <token>`
+- 보호 라우트는 미들웨어/핸들러 시작에서 세션 검증
+- 권한 매트릭스: guest / student / alumni / editor / admin
+
+## 입력 검증
+
+- 모든 POST/PUT 바디는 **zod** 스키마로 검증
+- 검증 실패 시 위 에러 포맷으로 400 반환
+
+## 레이트 리미팅 (IP 기준)
+
+- `POST /api/v1/inquiries`: 5건/시간
+- `POST /api/v1/events/:id/register`: 3건/시간
+- `POST /api/v1/newsletter/subscribe`: 3건/시간
+- 일반 GET: 100건/분
+
+## 페이지네이션
+
+- 쿼리: `?page=1&limit=10` (기본 10, 최대 100)
+- 응답 `meta`에 `page/limit/total` 포함
+
+## 사이드 이펙트
+
+- 외부 호출(Resend, reCAPTCHA)은 try/catch + Sentry 보고
+- 관리자 변경 작업은 **AdminAuditLogs**에 diff 기록 (필수)
