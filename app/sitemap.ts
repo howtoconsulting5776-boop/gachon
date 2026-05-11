@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { listPosts } from "@/lib/data/posts";
-import { MOCK_FACULTY, MOCK_LABS } from "@/lib/mock-data";
+import { MOCK_FACULTY, MOCK_LABS, MOCK_NOTICES } from "@/lib/mock-data";
 import { communityNoticePath } from "@/lib/post-path";
 import { getPublicSiteRoot } from "@/lib/site-url";
 
@@ -42,13 +42,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: path === "/" ? 1 : 0.7,
   }));
 
-  const { items: notices } = await listPosts("notice", { limit: 50 });
-  const noticeEntries: MetadataRoute.Sitemap = notices.map((n) => ({
-    url: `${root}${communityNoticePath(n)}`,
-    lastModified: new Date(n.date),
-    changeFrequency: "weekly",
-    priority: 0.65,
-  }));
+  const { items: notices } = await (async () => {
+    try {
+      return await listPosts("notice", { limit: 50 });
+    } catch {
+      // DB 연결 실패 등으로 공지 조회가 깨지면 사이트맵 전체 500이 되어 검색엔진이 가져오지 못함
+      return { items: MOCK_NOTICES.slice(0, 50), total: MOCK_NOTICES.length };
+    }
+  })();
+  const noticeEntries: MetadataRoute.Sitemap = notices.map((n) => {
+    const parsed = new Date(n.date);
+    const lastModified = Number.isNaN(parsed.getTime()) ? now : parsed;
+    return {
+      url: `${root}${communityNoticePath(n)}`,
+      lastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.65,
+    };
+  });
 
   const labEntries: MetadataRoute.Sitemap = MOCK_LABS.map((l) => ({
     url: `${root}/labs/${l.slug}`,
