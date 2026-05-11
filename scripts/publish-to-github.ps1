@@ -29,8 +29,8 @@ if ($LASTEXITCODE -eq 0) {
 HTTPS 푸시 인증에 실패했습니다. 다음 중 하나를 진행하세요.
 
   1) GitHub CLI 로 Git 자격 증명 연결 후 다시 푸시:
-       gh auth login
-       gh auth setup-git
+       npm run github:login
+       npm run github:setup-git
        git push -u origin $branch
 
   2) Personal Access Token 사용:
@@ -64,15 +64,25 @@ $ErrorActionPreference = "Stop"
 if ($authExit -ne 0) {
   Write-Host @"
 
-GitHub 로그인이 필요합니다. PowerShell에서 한 번 실행하세요:
+GitHub 로그인이 필요합니다. (PATH에 gh가 없으면 아래 npm 스크립트 사용)
 
-  & `"$gh`" auth login
+  npm run github:login
+  npm run github:setup-git
+
+또는 PowerShell에서 전체 경로:
+
+  & 'C:\Program Files\GitHub CLI\gh.exe' auth login
+  & 'C:\Program Files\GitHub CLI\gh.exe' auth setup-git
 
 토큰만 있는 경우:
 
   `$env:GITHUB_TOKEN = 'ghp_xxxxxxxx'; `$env:GITHUB_TOKEN | & `"$gh`" auth login --with-token
 
 완료 후 다시: npm run github:publish
+
+현재 세션만 PATH에 추가하려면:
+
+  `$env:Path += ';C:\Program Files\GitHub CLI'
 "@
   exit 1
 }

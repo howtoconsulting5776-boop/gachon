@@ -23,7 +23,9 @@
     "deploy:preview": "npx vercel@latest",
     "images:lab-covers": "node scripts/fetch-lab-covers.mjs",
     "images:optimize": "node scripts/optimize-public-images.mjs",
-    "github:publish": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-to-github.ps1"
+    "github:publish": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-to-github.ps1",
+    "github:login": "powershell -NoProfile -Command \"& 'C:\\Program Files\\GitHub CLI\\gh.exe' auth login\"",
+    "github:setup-git": "powershell -NoProfile -Command \"& 'C:\\Program Files\\GitHub CLI\\gh.exe' auth setup-git\""
   },
   "prisma": {
     "seed": "node prisma/seed.cjs"
