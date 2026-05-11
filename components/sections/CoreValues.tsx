@@ -8,8 +8,8 @@ const items = [
     icon: Compass,
   },
   {
-    title: "4개 특화 연구실",
-    body: "R&E LAB · 학원경영 LAB · AI 테크에듀 LAB · 연구논문 LAB에서 자신의 진로에 맞는 깊이 있는 연구를 수행합니다.",
+    title: "6개 특화 연구실",
+    body: "청소년 R&E LAB · 진로진학 LAB · 에듀비즈니스 LAB · 상담관리 LAB · AI 테크에듀 LAB · 연구논문 LAB에서 자신의 진로에 맞는 깊이 있는 연구를 수행합니다.",
     icon: FlaskConical,
   },
   {

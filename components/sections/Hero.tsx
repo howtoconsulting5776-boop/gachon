@@ -1,17 +1,24 @@
 ﻿import Image from "next/image";
 
+/** 극소형 JPEG — LCP 이미지 로드 전 레이아웃·색감 자리 확보용 */
+const HERO_BLUR_DATA_URL =
+  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAIAAgDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxAAPwCwAA8A/9k=";
+
 /** LCP·접근성: 히어로 카피는 SSR에서도 즉시 보이게 (framer initial opacity 0 제거). */
 export function Hero() {
   return (
     <section className="relative flex min-h-[600px] flex-col justify-center overflow-hidden md:min-h-[700px]">
-      {/* 배경 캠퍼스 사진 */}
+      {/* 배경 캠퍼스 사진 — `npm run images:optimize` 후 동일 경로에 .webp 생성 가능 */}
       <Image
         src="/hero-campus.jpg"
         alt=""
         fill
         priority
+        placeholder="blur"
+        blurDataURL={HERO_BLUR_DATA_URL}
         className="object-cover object-center"
         sizes="100vw"
+        quality={82}
       />
       {/* 가독성을 위한 네이비 오버레이 */}
       <div

@@ -69,13 +69,13 @@ export interface MockEvent {
 export const MOCK_FACULTY: MockFaculty[] = [
   {
     id: "1",
-    name: "박인호",
+    name: "박인오",
     position: "주임교수 · 교육학 · 경영학",
     researchArea: "진로진학, R&E, 서논술",
     email: "inhopark@gachon.ac.kr",
     labSlug: "rne",
-    bio: "교육 현장의 데이터와 연구 설계를 아우르는 경험을 바탕으로 R&E LAB을 이끕니다.",
-    portraitSrc: "/faculty/1.jpg",
+    bio: "교육 현장의 데이터와 연구 설계를 아우르는 경험을 바탕으로 청소년 R&E LAB과 진로진학 LAB을 이끕니다.",
+    portraitSrc: "/faculty/박인오.jpg",
   },
   {
     id: "2",
@@ -84,7 +84,7 @@ export const MOCK_FACULTY: MockFaculty[] = [
     researchArea: "교육경영, 마케팅, 인사, 전략",
     email: "yywon@gachon.ac.kr",
     labSlug: "academy",
-    bio: "교육기관의 경영·마케팅·인사·전략을 연구·실무 관점에서 통합해 학원경영 LAB을 이끕니다.",
+    bio: "교육기관의 경영·마케팅·인사·전략을 연구·실무 관점에서 통합해 에듀비즈니스 LAB과 상담관리 LAB을 이끕니다.",
     portraitSrc: "/faculty/2.jpg",
   },
   {
@@ -102,22 +102,42 @@ export const MOCK_FACULTY: MockFaculty[] = [
 export const MOCK_LABS: MockLab[] = [
   {
     slug: "rne",
-    name: "R&E LAB",
-    fullName: "Research & Education LAB",
-    tagline: "실무 데이터를 학문으로 잇다",
+    name: "청소년 R&E LAB",
+    fullName: "Youth Research & Education LAB",
+    tagline: "청소년 교육 현장의 데이터를 학문으로 잇다",
     description:
-      "교육 현장의 데이터를 연구로 발전시키고, 박사 진학으로 연결되는 학술 깊이를 갖춥니다.",
-    researchTopics: ["학습분석", "현장 R&E 설계", "정책·제도 분석"],
+      "청소년 교육 맥락에서 현장 데이터를 연구로 발전시키고, 박사 진학으로 이어지는 학술 깊이를 갖춥니다.",
+    researchTopics: ["청소년 학습분석", "현장 R&E 설계", "정책·제도 분석"],
+    leadFacultyId: "1",
+  },
+  {
+    slug: "career-guidance",
+    name: "진로진학 LAB",
+    fullName: "Career & College Guidance LAB",
+    tagline: "진로 설계와 진학 컨설팅의 전문성을 완성하다",
+    description:
+      "진로 탐색·진학 전략·입시 제도를 근거와 프로세스 중심으로 다루며, 컨설턴트와 기관 실무에 바로 쓰이는 설계 역량을 기릅니다.",
+    researchTopics: ["진로 설계 모델", "입시·제도 분석", "프로그램·상담 설계"],
     leadFacultyId: "1",
   },
   {
     slug: "academy",
-    name: "학원경영 LAB",
-    fullName: "Academy Management LAB",
-    tagline: "경영의 언어로 학원을 운영하다",
+    name: "에듀비즈니스 LAB",
+    fullName: "Edu-Business LAB",
+    tagline: "경영의 언어로 교육 기업을 운영하다",
     description:
       "학원·교육기관의 운영, 마케팅, 재무, 인사 전반을 경영학 프레임으로 재설계합니다.",
     researchTopics: ["원가·손익", "조직·인사", "브랜드·채널"],
+    leadFacultyId: "2",
+  },
+  {
+    slug: "counseling-management",
+    name: "상담관리 LAB",
+    fullName: "Counseling Management LAB",
+    tagline: "상담 운영의 품질과 신뢰를 체계화하다",
+    description:
+      "상담 프로세스·기록·피드백과 고객 관계 관리를 하나의 운영 체계로 묶어, 교육 서비스의 일관된 품질과 윤리를 지켜 나갑니다.",
+    researchTopics: ["상담 운영 체계", "CRM·고객 여정", "품질 관리·윤리"],
     leadFacultyId: "2",
   },
   {
@@ -309,6 +329,109 @@ export const MOCK_GALLERY_PREVIEW: MockGalleryPreviewItem[] = [
   },
 ];
 
+export type MockGalleryCategory = "event" | "workshop" | "graduation" | "daily";
+
+export interface MockGalleryAlbum {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  category: MockGalleryCategory;
+  images: { src: string; alt: string }[];
+}
+
+/** 갤러리 페이지·라이트박스용 앨범 더미 (이미지는 `public` 정적 자산 경로) */
+export const MOCK_GALLERY_ALBUMS: MockGalleryAlbum[] = [
+  {
+    id: "gal-1",
+    title: "2026 봄 LAB 워크숍",
+    description: "6개 LAB 소개와 현장 토론",
+    date: "2026-03-15",
+    category: "workshop",
+    images: [
+      { src: "/images/labs/rne.jpg", alt: "청소년 R&E LAB 현장" },
+      { src: "/images/labs/academy.jpg", alt: "에듀비즈니스 LAB" },
+      { src: "/images/labs/ai-tech-edu.jpg", alt: "AI 테크에듀 LAB" },
+    ],
+  },
+  {
+    id: "gal-2",
+    title: "초청 특강: 교육 산업의 다음 물결",
+    description: "산업 리더 초청 강연",
+    date: "2026-02-20",
+    category: "event",
+    images: [
+      { src: "/images/site/son-jueun-lecture.jpg", alt: "강연 장면" },
+      { src: "/images/site/son-jueun.jpg", alt: "연사와 참가자" },
+    ],
+  },
+  {
+    id: "gal-3",
+    title: "캠퍼스 투어",
+    description: "비전타워·학습 공간",
+    date: "2026-01-10",
+    category: "daily",
+    images: [
+      { src: "/images/site/vision-tower.jpg", alt: "비전타워" },
+      { src: "/images/site/glass-corridor.jpg", alt: "캠퍼스 복도" },
+      { src: "/images/site/industry-environment.jpg", alt: "학습 환경" },
+    ],
+  },
+  {
+    id: "gal-4",
+    title: "연합 MT·네트워킹",
+    description: "동문·재학생 교류",
+    date: "2025-11-08",
+    category: "event",
+    images: [{ src: "/images/site/group-photo.jpg", alt: "단체 사진" }],
+  },
+  {
+    id: "gal-5",
+    title: "연구논문 LAB 세미나",
+    description: "논문 설계 워크숍",
+    date: "2025-10-22",
+    category: "workshop",
+    images: [
+      { src: "/images/labs/research-writing.jpg", alt: "연구논문 LAB" },
+      { src: "/images/site/infinity.webp", alt: "브랜드 그래픽" },
+    ],
+  },
+  {
+    id: "gal-6",
+    title: "졸업 축하 행사",
+    description: "수료·졸업자 축하",
+    date: "2025-08-30",
+    category: "graduation",
+    images: [
+      { src: "/images/site/group-photo.jpg", alt: "졸업 행사" },
+      { src: "/images/site/vision-tower.jpg", alt: "캠퍼스" },
+    ],
+  },
+  {
+    id: "gal-7",
+    title: "AI 테크에듀 데모데이",
+    description: "프로토타입 발표",
+    date: "2025-06-14",
+    category: "workshop",
+    images: [
+      { src: "/images/labs/ai-tech-edu.jpg", alt: "AI LAB" },
+      { src: "/images/site/industry-environment.jpg", alt: "데모 공간" },
+      { src: "/images/site/glass-corridor.jpg", alt: "행사장 복도" },
+    ],
+  },
+  {
+    id: "gal-8",
+    title: "일상 스케치",
+    description: "수업·휴식 공간",
+    date: "2025-04-05",
+    category: "daily",
+    images: [
+      { src: "/images/site/glass-corridor.jpg", alt: "캠퍼스" },
+      { src: "/images/site/son-jueun.jpg", alt: "행사 스케치" },
+    ],
+  },
+];
+
 export const MOCK_FAQ: MockFaq[] = [
   {
     id: "f1",
@@ -343,7 +466,7 @@ export const MOCK_FAQ: MockFaq[] = [
     category: "졸업/진로",
     question: "박사 진학 연계는 어떻게 되나요?",
     answer:
-      "R&E LAB 및 연구논문 LAB에서 지도교수와 로드맵을 설계할 수 있습니다.",
+      "청소년 R&E LAB 및 연구논문 LAB에서 지도교수와 로드맵을 설계할 수 있습니다.",
   },
   {
     id: "f6",

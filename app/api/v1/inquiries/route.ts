@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { jsonErr, jsonOk } from "@/lib/api/v1/envelope";
-import { clientIpFromHeaders, rateLimitHit } from "@/lib/api/v1/rate-limit-memory";
+import { clientIpFromHeaders } from "@/lib/api/v1/rate-limit-memory";
+import { rateLimitGuard } from "@/lib/api/v1/rate-limit";
 import { admissionInquiryBodySchema } from "@/lib/validators/v1/inquiry";
 
 const WINDOW_MS = 60 * 60 * 1000;
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
   }
 
   const ip = clientIpFromHeaders(req.headers);
-  const rl = rateLimitHit(`inquiry:${ip}`, MAX_PER_WINDOW, WINDOW_MS);
+  const rl = await rateLimitGuard(`inquiry:${ip}`, MAX_PER_WINDOW, WINDOW_MS);
   if (!rl.ok) {
     return jsonErr(429, "RATE_LIMIT_EXCEEDED", "상담 신청은 시간당 최대 5건까지 가능합니다.", {
       retryAfterMs: rl.retryAfterMs,

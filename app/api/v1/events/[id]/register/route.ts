@@ -1,5 +1,6 @@
 import { jsonErr, jsonOk } from "@/lib/api/v1/envelope";
-import { clientIpFromHeaders, rateLimitHit } from "@/lib/api/v1/rate-limit-memory";
+import { clientIpFromHeaders } from "@/lib/api/v1/rate-limit-memory";
+import { rateLimitGuard } from "@/lib/api/v1/rate-limit";
 import { eventRegisterBodySchema } from "@/lib/validators/v1/event-register";
 import { createEventRegistration } from "@/lib/data/events";
 
@@ -12,7 +13,7 @@ export async function POST(req: Request, ctx: RouteCtx) {
   const { id: eventId } = ctx.params;
 
   const ip = clientIpFromHeaders(req.headers);
-  const rl = rateLimitHit(`event-reg:${ip}`, MAX_PER_WINDOW, WINDOW_MS);
+  const rl = await rateLimitGuard(`event-reg:${ip}`, MAX_PER_WINDOW, WINDOW_MS);
   if (!rl.ok) {
     return jsonErr(429, "RATE_LIMIT_EXCEEDED", "등록 요청이 너무 잦습니다. 잠시 후 다시 시도해 주세요.", {
       retryAfterMs: rl.retryAfterMs,

@@ -1,8 +1,11 @@
+import { Suspense } from "react";
 import { Hero } from "@/components/sections/Hero";
 import { CoreValues } from "@/components/sections/CoreValues";
 import { LabsQuickView } from "@/components/sections/LabsQuickView";
 import { AdmissionCountdown } from "@/components/sections/AdmissionCountdown";
+import { FacultyPreview } from "@/components/sections/FacultyPreview";
 import { LatestNews } from "@/components/sections/LatestNews";
+import { LatestNewsSkeleton } from "@/components/sections/LatestNewsSkeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -14,7 +17,10 @@ export default async function HomePage() {
       <CoreValues />
       <LabsQuickView />
       <AdmissionCountdown />
-      <LatestNews />
+      <FacultyPreview />
+      <Suspense fallback={<LatestNewsSkeleton />}>
+        <LatestNews />
+      </Suspense>
       <section className="bg-gachon-900 py-12 text-center text-white md:py-16">
         <div className="mx-auto max-w-screen-xl px-6 md:px-12">
           <h2 className="text-2xl font-bold break-keep md:text-3xl">

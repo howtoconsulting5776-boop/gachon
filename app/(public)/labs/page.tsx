@@ -13,7 +13,7 @@ export default function LabsIndexPage() {
     <div>
       <PageHeader
         title="연구실 (LAB)"
-        description="전공의 4개 특화 연구실을 소개합니다."
+        description={`전공의 ${MOCK_LABS.length}개 특화 연구실을 소개합니다.`}
         breadcrumb={[{ label: "홈", href: "/" }, { label: "연구실" }]}
       />
       <div className="mx-auto max-w-screen-xl space-y-6 px-6 py-12 md:px-12">

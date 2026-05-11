@@ -16,6 +16,8 @@ export async function PUT(req: Request, ctx: RouteCtx) {
     return jsonErr(503, "DATABASE_NOT_CONFIGURED", "데이터베이스가 설정되지 않았습니다.");
   }
 
+  const { id } = ctx.params;
+
   let body: unknown;
   try {
     body = await req.json();
@@ -31,7 +33,7 @@ export async function PUT(req: Request, ctx: RouteCtx) {
   }
 
   const existing = await prisma.admissionInquiry.findUnique({
-    where: { id: ctx.params.id },
+    where: { id },
   });
   if (!existing) {
     return jsonErr(404, "NOT_FOUND", "상담 건을 찾을 수 없습니다.");
@@ -39,14 +41,14 @@ export async function PUT(req: Request, ctx: RouteCtx) {
 
   const v = parsed.data;
   const row = await prisma.admissionInquiry.update({
-    where: { id: ctx.params.id },
+    where: { id },
     data: {
       status: v.status,
       adminNotes: v.adminNotes?.trim() || null,
     },
   });
 
-  await writeAdminAudit(user.email, "inquiry.update", ctx.params.id, {
+  await writeAdminAudit(user.email, "inquiry.update", id, {
     before: { status: existing.status },
     after: { status: row.status },
   });

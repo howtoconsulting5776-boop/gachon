@@ -3,15 +3,14 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { MOCK_LABS } from "@/lib/mock-data";
 
-/** LAB 주제별 커버 사진 (Unsplash, 무료 라이선스) */
+/** LAB 주제별 커버 — `npm run images:lab-covers` 로 동일 파일 재생성 가능 */
 const LAB_COVER_IMAGES: Record<string, string> = {
-  rne: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80",
-  academy:
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80",
-  "ai-tech-edu":
-    "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80",
-  "research-writing":
-    "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80",
+  rne: "/images/labs/rne.jpg",
+  "career-guidance": "/images/labs/rne.jpg",
+  academy: "/images/labs/academy.jpg",
+  "counseling-management": "/images/labs/academy.jpg",
+  "ai-tech-edu": "/images/labs/ai-tech-edu.jpg",
+  "research-writing": "/images/labs/research-writing.jpg",
 };
 
 export function LabsQuickView() {
@@ -23,7 +22,7 @@ export function LabsQuickView() {
             RESEARCH LABS
           </p>
           <h2 className="mt-2 text-3xl font-bold text-gachon-900 md:text-4xl break-keep">
-            4개 특화 연구실에서 미래를 설계하세요
+            {MOCK_LABS.length}개 특화 연구실에서 미래를 설계하세요
           </h2>
           <p className="mt-3 text-gray-600 break-keep">
             현장 문제에서 출발해 연구와 실무를 잇는 LAB별 커리큘럼과 프로젝트를
@@ -45,6 +44,9 @@ export function LabsQuickView() {
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 45vw"
+                    quality={78}
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div
                     className="pointer-events-none absolute inset-0 bg-gradient-to-t from-gachon-900/50 via-gachon-900/15 to-transparent md:bg-gradient-to-r"

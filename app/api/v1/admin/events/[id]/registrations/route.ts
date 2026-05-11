@@ -14,11 +14,12 @@ export async function GET(_req: Request, ctx: RouteCtx) {
     return jsonErr(503, "DATABASE_NOT_CONFIGURED", "데이터베이스가 설정되지 않았습니다.");
   }
 
-  const event = await prisma.event.findUnique({ where: { id: ctx.params.id } });
+  const { id } = ctx.params;
+  const event = await prisma.event.findUnique({ where: { id } });
   if (!event) return jsonErr(404, "NOT_FOUND", "행사를 찾을 수 없습니다.");
 
   const rows = await prisma.eventRegistration.findMany({
-    where: { eventId: ctx.params.id },
+    where: { eventId: id },
     orderBy: { createdAt: "desc" },
   });
 

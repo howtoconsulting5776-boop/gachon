@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
 import { jsonErr, jsonOk } from "@/lib/api/v1/envelope";
 import { isDatabaseConfigured } from "@/lib/data/posts";
+import { verifyNewsletterSubscriberByToken } from "@/lib/newsletter/verify-subscriber";
 
 export async function GET(req: Request) {
   if (!isDatabaseConfigured()) {
@@ -13,25 +13,17 @@ export async function GET(req: Request) {
 
   const { searchParams } = new URL(req.url);
   const token = searchParams.get("token")?.trim();
-  if (!token) {
+
+  const result = await verifyNewsletterSubscriberByToken(token);
+  if (result.ok === false && result.code === "MISSING") {
     return jsonErr(400, "MISSING_TOKEN", "token 쿼리가 필요합니다.");
   }
-
-  const row = await prisma.newsletterSubscriber.findFirst({
-    where: { verifyToken: token },
-  });
-  if (!row) {
+  if (result.ok === false && result.code === "NOT_FOUND") {
     return jsonErr(404, "INVALID_TOKEN", "유효하지 않은 인증 링크입니다.");
   }
+  if (result.ok === false) {
+    return jsonErr(503, "VERIFY_UNAVAILABLE", "인증을 처리할 수 없습니다.");
+  }
 
-  await prisma.newsletterSubscriber.update({
-    where: { id: row.id },
-    data: {
-      verified: true,
-      verifiedAt: new Date(),
-      verifyToken: null,
-    },
-  });
-
-  return jsonOk({ verified: true, email: row.email });
+  return jsonOk({ verified: true, email: result.email });
 }

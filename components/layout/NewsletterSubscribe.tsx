@@ -45,7 +45,7 @@ export function NewsletterSubscribe() {
   return (
     <form onSubmit={onSubmit} className="max-w-md space-y-3 break-keep">
       <p className="text-sm text-gray-300">
-        모집·행사 소식을 이메일로 받아보세요. (DB 연결 및 메일 인증 후 활성화)
+        모집·행사 소식을 이메일로 받아보세요. 구독 후 메일의 링크로 인증하면 수신이 활성화됩니다.
       </p>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
         <div className="flex-1">

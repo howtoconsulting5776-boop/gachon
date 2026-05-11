@@ -16,7 +16,8 @@ export async function GET(_req: Request, ctx: RouteCtx) {
     return jsonErr(503, "DATABASE_NOT_CONFIGURED", "데이터베이스가 설정되지 않았습니다.");
   }
 
-  const row = await prisma.post.findUnique({ where: { id: ctx.params.id } });
+  const { id } = ctx.params;
+  const row = await prisma.post.findUnique({ where: { id } });
   if (!row) return jsonErr(404, "NOT_FOUND", "게시글을 찾을 수 없습니다.");
   return jsonOk(postToDto(row));
 }
@@ -28,6 +29,8 @@ export async function PUT(req: Request, ctx: RouteCtx) {
   if (!isDatabaseConfigured()) {
     return jsonErr(503, "DATABASE_NOT_CONFIGURED", "데이터베이스가 설정되지 않았습니다.");
   }
+
+  const { id } = ctx.params;
 
   let body: unknown;
   try {
@@ -43,7 +46,7 @@ export async function PUT(req: Request, ctx: RouteCtx) {
     });
   }
 
-  const existing = await prisma.post.findUnique({ where: { id: ctx.params.id } });
+  const existing = await prisma.post.findUnique({ where: { id } });
   if (!existing) return jsonErr(404, "NOT_FOUND", "게시글을 찾을 수 없습니다.");
 
   const v = parsed.data;
@@ -51,7 +54,7 @@ export async function PUT(req: Request, ctx: RouteCtx) {
   const excerpt = text.length > 200 ? `${text.slice(0, 200)}…` : text;
 
   const row = await prisma.post.update({
-    where: { id: ctx.params.id },
+    where: { id },
     data: {
       title: v.title.trim(),
       excerpt,
@@ -60,7 +63,7 @@ export async function PUT(req: Request, ctx: RouteCtx) {
     },
   });
 
-  await writeAdminAudit(user.email, "post.update", ctx.params.id, {
+  await writeAdminAudit(user.email, "post.update", id, {
     title: row.title,
   });
 
@@ -75,11 +78,12 @@ export async function DELETE(_req: Request, ctx: RouteCtx) {
     return jsonErr(503, "DATABASE_NOT_CONFIGURED", "데이터베이스가 설정되지 않았습니다.");
   }
 
-  const existing = await prisma.post.findUnique({ where: { id: ctx.params.id } });
+  const { id } = ctx.params;
+  const existing = await prisma.post.findUnique({ where: { id } });
   if (!existing) return jsonErr(404, "NOT_FOUND", "게시글을 찾을 수 없습니다.");
 
-  await prisma.post.delete({ where: { id: ctx.params.id } });
-  await writeAdminAudit(user.email, "post.delete", ctx.params.id, {});
+  await prisma.post.delete({ where: { id } });
+  await writeAdminAudit(user.email, "post.delete", id, {});
 
   return jsonOk({ deleted: true });
 }

@@ -25,8 +25,10 @@ export const MAIN_NAV: NavItem[] = [
     label: "연구실",
     href: "/labs",
     submenu: [
-      { label: "R&E LAB", href: "/labs/rne" },
-      { label: "학원경영 LAB", href: "/labs/academy" },
+      { label: "청소년 R&E LAB", href: "/labs/rne" },
+      { label: "진로진학 LAB", href: "/labs/career-guidance" },
+      { label: "에듀비즈니스 LAB", href: "/labs/academy" },
+      { label: "상담관리 LAB", href: "/labs/counseling-management" },
       { label: "AI 테크에듀 LAB", href: "/labs/ai-tech-edu" },
       { label: "연구논문 LAB", href: "/labs/research-writing" },
     ],

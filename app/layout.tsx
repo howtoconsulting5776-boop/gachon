@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
 import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 
@@ -42,12 +44,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={inter.variable}>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-        />
-      </head>
       <body className="font-pretendard antialiased text-gray-900">
         <SiteJsonLd />
         <a
@@ -57,6 +53,7 @@ export default function RootLayout({
           본문으로 바로가기
         </a>
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );

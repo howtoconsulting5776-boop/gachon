@@ -30,5 +30,8 @@ yarn-error.log*
 # vercel
 .vercel
 
+# 로컬에만 둔 초상 중복 파일 (정본은 public/faculty/)
+/박인오.jpg
+
 # typescript
 *.tsbuildinfo
