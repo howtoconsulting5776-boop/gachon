@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { jsonErr, jsonOk } from "@/lib/api/v1/envelope";
 import { clientIpFromHeaders } from "@/lib/api/v1/rate-limit-memory";
 import { rateLimitGuard } from "@/lib/api/v1/rate-limit";
+import { sendInquiryNotificationEmail } from "@/lib/email/send-inquiry-notification";
 import { admissionInquiryBodySchema } from "@/lib/validators/v1/inquiry";
 
 const WINDOW_MS = 60 * 60 * 1000;
@@ -54,6 +55,25 @@ export async function POST(req: Request) {
       sourceIp: ip === "unknown" ? null : ip,
     },
   });
+
+  // 관리자 알림 메일 — 실패해도 사용자 응답에는 영향을 주지 않는다.
+  try {
+    const result = await sendInquiryNotificationEmail({
+      inquiryId: row.id,
+      name: row.name,
+      phone: row.phone,
+      email: row.email,
+      interestLab: row.interestLab,
+      message: row.message,
+      marketingConsent: row.marketingConsent,
+      submittedAt: row.createdAt ?? new Date(),
+    });
+    if (!result.ok) {
+      console.warn("[inquiry] notification email skipped:", result.message);
+    }
+  } catch (err) {
+    console.error("[inquiry] notification email error:", err);
+  }
 
   return jsonOk({ id: row.id }, { status: 201 });
 }

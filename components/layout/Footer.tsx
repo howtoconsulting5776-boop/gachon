@@ -48,7 +48,13 @@ export function Footer() {
             <p className="text-sm break-keep">
               <span className="text-gray-400">사무실</span> 031-750-0000
               <br />
-              <span className="text-gray-400">이메일</span> educonsulting@gachon.ac.kr
+              <span className="text-gray-400">이메일</span>{" "}
+              <a
+                href="mailto:bear5776@gachon.ac.kr"
+                className="transition-colors hover:text-white"
+              >
+                bear5776@gachon.ac.kr
+              </a>
             </p>
             <div className="flex gap-3" aria-label="소셜 미디어">
               <a
