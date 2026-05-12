@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "모집요강",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/admissions/brochure",
+  "모집요강",
+  "지원 자격, 제출 서류, 전형 일정 등 모집요강 핵심 안내 페이지입니다. 확정 문구는 공식 요강을 따릅니다."
+);
 
 export default function BrochurePage() {
   return (

@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { FaqAccordion } from "@/components/admissions/FaqAccordion";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "FAQ",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/admissions/faq",
+  "FAQ",
+  "입학·학사·LAB 등 자주 묻는 질문과 답변을 모았습니다. 최종 해석은 모집요강과 교학팀 안내를 따릅니다."
+);
 
 export default function FaqPage() {
   return (

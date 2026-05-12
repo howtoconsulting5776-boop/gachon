@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { AdmissionTimeline } from "@/components/admissions/AdmissionTimeline";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "모집 일정",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/admissions/schedule",
+  "모집 일정",
+  "원서 접수·서류·면접·합격 발표 등 후기 모집 일정을 타임라인으로 안내합니다."
+);
 
 export default function AdmissionSchedulePage() {
   return (

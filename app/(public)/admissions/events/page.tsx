@@ -4,10 +4,13 @@ import { EventRegisterButton } from "@/components/admissions/EventRegisterButton
 import { listEvents } from "@/lib/data/events";
 import { isDatabaseConfigured } from "@/lib/data/posts";
 import { Badge } from "@/components/ui/badge";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "설명회 안내",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/admissions/events",
+  "설명회 안내",
+  "온·오프라인 설명회 일정과 사전 등록 방법을 안내합니다. 일정은 공식 공지를 확인해 주세요."
+);
 
 export const dynamic = "force-dynamic";
 

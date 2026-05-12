@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ScholarshipCards } from "@/components/admissions/ScholarshipCards";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "장학금",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/admissions/scholarships",
+  "장학금",
+  "우수·교육현장·성적 등 장학 구조와 감면 예시를 안내합니다. 세부 자격은 모집요강을 따릅니다."
+);
 
 export default function ScholarshipsPage() {
   return (

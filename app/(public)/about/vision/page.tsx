@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "비전 및 목표",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/about/vision",
+  "비전 및 목표",
+  "에듀컨설팅 전공의 비전·교육목표·육성 역량과 학습 설계를 공식적으로 정리합니다."
+);
 
 export default function VisionPage() {
   return (

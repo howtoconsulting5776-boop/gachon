@@ -6,9 +6,9 @@ import { MOCK_LABS } from "@/lib/mock-data";
 /** LAB 주제별 커버 — `npm run images:lab-covers` 로 동일 파일 재생성 가능 */
 const LAB_COVER_IMAGES: Record<string, string> = {
   rne: "/images/labs/rne.jpg",
-  "career-guidance": "/images/labs/rne.jpg",
+  "career-guidance": "/images/labs/career-guidance.jpg",
   academy: "/images/labs/academy.jpg",
-  "counseling-management": "/images/labs/academy.jpg",
+  "counseling-management": "/images/labs/counseling-management.jpg",
   "ai-tech-edu": "/images/labs/ai-tech-edu.jpg",
   "research-writing": "/images/labs/research-writing.jpg",
 };
@@ -40,7 +40,7 @@ export function LabsQuickView() {
                 <div className="relative h-44 w-full shrink-0 overflow-hidden bg-gachon-100 md:min-h-[280px] md:w-1/2">
                   <Image
                     src={LAB_COVER_IMAGES[lab.slug] ?? LAB_COVER_IMAGES.rne}
-                    alt=""
+                    alt={`${lab.name} 커버 이미지`}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 45vw"

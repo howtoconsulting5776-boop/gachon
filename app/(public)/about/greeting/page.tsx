@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "전공소개",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/about/greeting",
+  "전공소개",
+  "가천대 경영대학원 에듀컨설팅 전공 소개, 교육 목표, 졸업 후 진로와 혜택을 안내합니다."
+);
 
 export default function GreetingPage() {
   return (

@@ -3,10 +3,13 @@ import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "입학 안내",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/admissions",
+  "입학 안내",
+  "모집요강·일정·장학금·상담·설명회·FAQ까지 후기 모집 정보를 한곳에서 연결합니다."
+);
 
 const links = [
   { href: "/admissions/brochure", title: "모집요강", desc: "지원 자격·제출 서류" },

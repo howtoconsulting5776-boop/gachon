@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { MOCK_CURRICULUM } from "@/lib/mock-data";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "커리큘럼",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/about/curriculum",
+  "커리큘럼",
+  "공통·전공 교과 구성, 학점 체계, LAB 연계를 한눈에 볼 수 있는 에듀컨설팅 전공 커리큘럼 안내입니다."
+);
 
 export default function CurriculumPage() {
   return (

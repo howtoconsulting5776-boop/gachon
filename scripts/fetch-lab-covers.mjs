@@ -11,11 +11,32 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const outDir = path.join(root, "public", "images", "labs");
 
+/** slug별 주제에 맞는 스톡 커버 (Unsplash). `npm run images:lab-covers` 로 동기화 */
 const COVERS = [
-  { slug: "rne", url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=75" },
-  { slug: "academy", url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=75" },
-  { slug: "ai-tech-edu", url: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=75" },
-  { slug: "research-writing", url: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=75" },
+  {
+    slug: "rne",
+    url: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    slug: "career-guidance",
+    url: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    slug: "academy",
+    url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    slug: "counseling-management",
+    url: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    slug: "ai-tech-edu",
+    url: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    slug: "research-writing",
+    url: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80",
+  },
 ];
 
 function download(url) {

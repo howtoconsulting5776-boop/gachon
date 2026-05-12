@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "학사 운영",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/about/academic",
+  "학사 운영",
+  "수업·출석·논문 등 학사 운영 개요를 안내합니다. 확정 규정은 학과 공지와 대학원 학칙을 따릅니다."
+);
 
 export default function AcademicPage() {
   return (

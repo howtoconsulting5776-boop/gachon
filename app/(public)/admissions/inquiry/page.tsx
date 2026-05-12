@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { InquiryForm } from "@/components/admissions/InquiryForm";
+import { publicPageMetadata } from "@/lib/seo/page-meta";
 
-export const metadata: Metadata = {
-  title: "입학 상담",
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/admissions/inquiry",
+  "입학 상담",
+  "입학 상담 신청 폼입니다. 이름·연락처·이메일 등 필수 항목을 남기면 담당 부서에서 연락드릴 수 있습니다."
+);
 
 export default function InquiryPage() {
   return (
