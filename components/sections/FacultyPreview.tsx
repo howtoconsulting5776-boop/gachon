@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { MOCK_FACULTY } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
+import { FacultyPortrait } from "@/components/faculty/FacultyPortrait";
 
 function facultyBadge(position: string): string {
   if (position.includes("주임")) return "주임교수";
@@ -67,14 +67,14 @@ function FacultyCard({ faculty }: FacultyCardProps) {
       className="group block w-full max-w-[280px] md:max-w-none"
     >
       <article className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-        <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
+        <div className="relative aspect-square w-full min-h-0 min-w-0 overflow-hidden bg-gray-100">
           {faculty.portraitSrc ? (
-            <Image
-              src={faculty.portraitSrc}
-              alt={`${faculty.name} 교수`}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            <FacultyPortrait
+              fillContainer
+              faculty={faculty}
               sizes="(max-width: 768px) 85vw, 33vw"
+              enableHoverZoom
+              imageAlt={`${faculty.name} 교수`}
             />
           ) : (
             <div className="flex h-full min-h-[200px] items-center justify-center bg-gachon-100 text-3xl font-semibold text-gachon-600">

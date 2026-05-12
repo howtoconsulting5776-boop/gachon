@@ -10,6 +10,12 @@ export interface MockFaculty {
   bio: string;
   /** 메인·교수진 목록 등에 쓰는 정적 초상 (`public` 기준 경로) */
   portraitSrc?: string;
+  /** 정사각·세로 크롭 시 얼굴 위치 맞춤 (`object-position`) */
+  portraitObjectPosition?: string;
+  /** 1보다 크면 상반신 확대(원거리 촬영), 작으면 타이트한 초상 완화 */
+  portraitZoom?: number;
+  /** `portraitZoom` 기준점 — 보통 머리 쪽 */
+  portraitTransformOrigin?: string;
 }
 
 export interface MockLab {
@@ -76,6 +82,9 @@ export const MOCK_FACULTY: MockFaculty[] = [
     labSlug: "rne",
     bio: "교육 현장의 데이터와 연구 설계를 아우르는 경험을 바탕으로 청소년 R&E LAB과 진로진학 LAB을 이끕니다.",
     portraitSrc: "/faculty/박인오.jpg",
+    portraitObjectPosition: "center 22%",
+    portraitZoom: 1.18,
+    portraitTransformOrigin: "center 24%",
   },
   {
     id: "2",
@@ -86,6 +95,9 @@ export const MOCK_FACULTY: MockFaculty[] = [
     labSlug: "academy",
     bio: "교육기관의 경영·마케팅·인사·전략을 연구·실무 관점에서 통합해 에듀비즈니스 LAB과 상담관리 LAB을 이끕니다.",
     portraitSrc: "/faculty/2.jpg",
+    portraitObjectPosition: "center 48%",
+    portraitZoom: 0.9,
+    portraitTransformOrigin: "center 18%",
   },
   {
     id: "3",
@@ -96,6 +108,9 @@ export const MOCK_FACULTY: MockFaculty[] = [
     labSlug: "ai-tech-edu",
     bio: "AI와 경영·교육의 접점에서 연구방법론과 통계를 활용한 분석·전략을 지도합니다.",
     portraitSrc: "/faculty/3.jpg",
+    portraitObjectPosition: "center 30%",
+    portraitZoom: 1.06,
+    portraitTransformOrigin: "center 20%",
   },
 ];
 

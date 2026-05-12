@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { MOCK_FACULTY } from "@/lib/mock-data";
+import { FacultyPortrait } from "@/components/faculty/FacultyPortrait";
 
 export const metadata: Metadata = {
   title: "교수진",
@@ -28,14 +28,12 @@ export default function FacultyListPage() {
                 className="block rounded-[0.67rem] border border-gray-200 p-6 transition-shadow hover:shadow-md break-keep"
               >
                 {f.portraitSrc ? (
-                  <div className="relative aspect-[4/5] w-full max-h-56 overflow-hidden rounded-lg bg-gachon-100">
-                    <Image
-                      src={f.portraitSrc}
-                      alt=""
-                      fill
-                      priority={index === 0}
-                      className="object-cover object-top"
+                  <div className="relative aspect-[4/5] w-full min-h-0 min-w-0 max-h-56 overflow-hidden rounded-lg bg-gachon-100">
+                    <FacultyPortrait
+                      fillContainer
+                      faculty={f}
                       sizes="(max-width: 640px) 90vw, 320px"
+                      priority={index === 0}
                     />
                   </div>
                 ) : (
