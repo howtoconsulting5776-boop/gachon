@@ -8,6 +8,8 @@ import {
   MOCK_LABS,
 } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
+import { AiTechEduCurriculumMatrix } from "@/components/labs/AiTechEduCurriculumMatrix";
+import { ResearchWritingRoadmap } from "@/components/labs/ResearchWritingRoadmap";
 
 interface Props {
   params: { slug: string };
@@ -22,7 +24,8 @@ export function generateMetadata({ params }: Props): Metadata {
   const lab = getLabBySlug(slug);
   if (!lab) return { title: "LAB" };
   const path = `/labs/${lab.slug}`;
-  const description = `${lab.tagline} ${lab.description}`.slice(0, 155);
+  const plain = `${lab.tagline} ${lab.description}`.replace(/\s+/g, " ").trim();
+  const description = plain.slice(0, 155);
   const ogImage = `/images/labs/${lab.slug}.jpg`;
   return {
     title: lab.name,
@@ -48,6 +51,8 @@ export default function LabDetailPage({ params }: Props) {
   const lab = getLabBySlug(slug);
   if (!lab) notFound();
   const lead = getLeadFacultyForLab(lab);
+  const wideLab =
+    lab.slug === "ai-tech-edu" || lab.slug === "research-writing";
 
   return (
     <div>
@@ -60,10 +65,27 @@ export default function LabDetailPage({ params }: Props) {
           { label: lab.name },
         ]}
       />
-      <div className="mx-auto max-w-3xl space-y-10 px-6 py-12 md:px-12">
-        <p className="leading-relaxed text-gray-700 break-keep">
-          {lab.description}
-        </p>
+      <div
+        className={`mx-auto space-y-10 px-6 py-12 md:px-12 ${wideLab ? "max-w-4xl" : "max-w-3xl"}`}
+      >
+        <div className="space-y-4 leading-relaxed text-gray-700 break-keep">
+          {lab.description
+            .split(/\n\n+/)
+            .filter((p) => p.trim())
+            .map((para, i) => (
+              <p key={i}>{para.trim()}</p>
+            ))}
+        </div>
+        {lab.slug === "research-writing" && (
+          <section className="border-t border-gray-200 pt-10">
+            <ResearchWritingRoadmap />
+          </section>
+        )}
+        {lab.slug === "ai-tech-edu" && (
+          <section className="border-t border-gray-200 pt-10">
+            <AiTechEduCurriculumMatrix />
+          </section>
+        )}
         <section>
           <h2 className="text-lg font-semibold text-gachon-900 break-keep">
             연구 주제
