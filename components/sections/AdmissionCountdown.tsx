@@ -3,8 +3,8 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-const START = new Date("2026-05-06T09:00:00+09:00").getTime();
-const END = new Date("2026-05-20T23:59:59+09:00").getTime();
+const START = new Date("2026-05-06T00:00:00+09:00").getTime();
+const END = new Date("2026-06-05T23:59:59+09:00").getTime();
 
 function pad(n: number) {
   return String(n).padStart(2, "0");
@@ -55,7 +55,7 @@ export function AdmissionCountdown() {
             {phase === "after" && "원서접수가 마감되었습니다"}
           </h2>
           <p className="mt-2 text-sm text-white/80 break-keep">
-            2026년 5월 6일(화) ~ 5월 20일(화) · 일정은 모집요강을 따릅니다.
+            2026년 5월 6일(수) ~ 6월 5일(금) · 일정은 모집요강을 따릅니다.
           </p>
         </div>
         {phase !== "after" && (

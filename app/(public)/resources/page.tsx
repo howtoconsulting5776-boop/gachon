@@ -2,15 +2,35 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { FileText } from "lucide-react";
+import { Download, FileText } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "자료실",
 };
 
-const files = [
-  { name: "2026학년도 후기 모집요강 (예정)", type: "PDF" },
-  { name: "전공 소개 브로슈어", type: "PDF" },
+interface DownloadableFile {
+  name: string;
+  type: string;
+  href?: string;
+  downloadName?: string;
+  description?: string;
+  available: boolean;
+}
+
+const files: DownloadableFile[] = [
+  {
+    name: "전공 소개 브로슈어",
+    type: "PDF",
+    href: "/files/edu-consulting-brochure-2026-late.pdf",
+    downloadName: "가천대_에듀컨설팅전공_2026후기_모집요강.pdf",
+    description: "2026학년도 후기 에듀컨설팅 전공 모집요강 · 전공 소개 자료",
+    available: true,
+  },
+  {
+    name: "장학금 신청서 (2026학년도 후기)",
+    type: "HWP",
+    available: false,
+  },
 ];
 
 const highlights = [
@@ -89,20 +109,68 @@ export default function ResourcesPage() {
         </div>
       </section>
 
-      <ul className="mx-auto max-w-2xl divide-y divide-gray-100 px-6 py-12 md:px-12">
-        {files.map((f) => (
-          <li
-            key={f.name}
-            className="flex items-center justify-between gap-4 py-4 break-keep"
-          >
-            <span className="flex items-center gap-3 font-medium text-gachon-900">
-              <FileText className="size-5 shrink-0 text-gachon-500" aria-hidden />
-              {f.name}
-            </span>
-            <span className="shrink-0 text-xs text-gray-500">{f.type}</span>
-          </li>
-        ))}
-      </ul>
+      <section className="mx-auto max-w-2xl px-6 py-12 md:px-12">
+        <h2 className="text-lg font-semibold text-gachon-900 break-keep md:text-xl">
+          다운로드 자료
+        </h2>
+        <p className="mt-1 text-sm text-gray-600 break-keep">
+          공식 모집요강·브로슈어 등 PDF·HWP 자료입니다. 일부 자료는 학기 운영에
+          맞춰 순차 공개됩니다.
+        </p>
+        <ul className="mt-6 divide-y divide-gray-100">
+          {files.map((f) =>
+            f.available && f.href ? (
+              <li key={f.name} className="break-keep">
+                <a
+                  href={f.href}
+                  download={f.downloadName ?? true}
+                  className="group flex items-center justify-between gap-4 rounded-lg px-2 py-4 transition-colors hover:bg-gachon-50/60"
+                >
+                  <span className="flex min-w-0 items-start gap-3">
+                    <FileText
+                      className="mt-0.5 size-5 shrink-0 text-gachon-500"
+                      aria-hidden
+                    />
+                    <span className="min-w-0">
+                      <span className="block font-medium text-gachon-900 group-hover:text-gachon-700">
+                        {f.name}
+                      </span>
+                      {f.description && (
+                        <span className="mt-0.5 block text-sm text-gray-600">
+                          {f.description}
+                        </span>
+                      )}
+                    </span>
+                  </span>
+                  <span className="flex shrink-0 items-center gap-2 text-xs text-gray-500">
+                    {f.type}
+                    <Download
+                      className="size-4 text-gachon-500 transition-transform group-hover:-translate-y-0.5 group-hover:text-gachon-700"
+                      aria-hidden
+                    />
+                  </span>
+                </a>
+              </li>
+            ) : (
+              <li
+                key={f.name}
+                className="flex items-center justify-between gap-4 px-2 py-4 break-keep"
+              >
+                <span className="flex items-center gap-3 font-medium text-gray-500">
+                  <FileText
+                    className="size-5 shrink-0 text-gray-300"
+                    aria-hidden
+                  />
+                  {f.name}
+                </span>
+                <span className="shrink-0 text-xs text-gray-400">
+                  {f.type} · 준비 중
+                </span>
+              </li>
+            )
+          )}
+        </ul>
+      </section>
     </div>
   );
 }

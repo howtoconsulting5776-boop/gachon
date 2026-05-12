@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
+import { Download, ExternalLink } from "lucide-react";
 import { publicPageMetadata } from "@/lib/seo/page-meta";
 
 export const metadata: Metadata = publicPageMetadata(
@@ -60,6 +60,15 @@ export default function BrochurePage() {
             기준으로 합니다.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
+            <Button asChild className="gap-2">
+              <a
+                href="/files/edu-consulting-brochure-2026-late.pdf"
+                download="가천대_에듀컨설팅전공_2026후기_모집요강.pdf"
+              >
+                <Download className="size-4" aria-hidden />
+                전공 모집요강 PDF 다운로드
+              </a>
+            </Button>
             <Button asChild variant="outline" className="gap-2">
               <a
                 href={OFFICIAL_GUIDE_URL}
@@ -70,7 +79,7 @@ export default function BrochurePage() {
                 학교 공식 모집요강 페이지
               </a>
             </Button>
-            <Button asChild className="gap-2">
+            <Button asChild variant="secondary" className="gap-2">
               <a
                 href={ONLINE_APPLY_URL}
                 target="_blank"
