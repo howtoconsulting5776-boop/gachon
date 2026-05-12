@@ -60,8 +60,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={inter.variable}>
-      <body className="font-pretendard antialiased text-gray-900">
+    <html lang="ko" className={inter.variable} suppressHydrationWarning>
+      <body
+        className="font-pretendard antialiased text-gray-900"
+        suppressHydrationWarning
+      >
         <SiteJsonLd />
         <a
           href="#main"
