@@ -11,25 +11,25 @@ const cohorts = [
   {
     name: "1기",
     term: "2024 후기",
-    count: 8,
+    count: 3,
     summary: "학원 경영자와 진로·진학 컨설턴트 중심의 초기 원우 그룹",
   },
   {
     name: "2기",
     term: "2025 전기",
-    count: 10,
+    count: 5,
     summary: "전공대표를 중심으로 LAB 간 교차 스터디를 운영하는 핵심 기수",
   },
   {
     name: "3기",
     term: "2025 후기",
-    count: 9,
+    count: 4,
     summary: "에듀테크 기획, 상담 운영, 교육 콘텐츠 기획 분야 현직자 참여",
   },
   {
     name: "4기",
     term: "2026 전기",
-    count: 12,
+    count: 3,
     summary: "신입 원우 중심으로 멘토링과 기초 연구방법론 스터디 진행",
   },
 ];
