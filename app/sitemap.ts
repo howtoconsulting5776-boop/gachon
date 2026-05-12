@@ -1,9 +1,12 @@
 import type { MetadataRoute } from "next";
-import { listPosts } from "@/lib/data/posts";
 import { MOCK_FACULTY, MOCK_LABS, MOCK_NOTICES } from "@/lib/mock-data";
 import { communityNoticePath } from "@/lib/post-path";
 import { getPublicSiteRoot } from "@/lib/site-url";
 
+/**
+ * 공지 URL은 Prisma/DB·Edge 이슈로 500이 나지 않도록 목 데이터만 사용합니다.
+ * (페이지 `/community/notice`는 DB 연동 유지. 검색용 URL 목록은 정적·안정 우선.)
+ */
 const STATIC_PATHS = [
   "/",
   "/about/greeting",
@@ -32,48 +35,54 @@ const STATIC_PATHS = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const root = getPublicSiteRoot();
-  const now = new Date();
+  try {
+    const root = getPublicSiteRoot();
+    const now = new Date();
 
-  const staticEntries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => ({
-    url: `${root}${path === "/" ? "" : path}`,
-    lastModified: now,
-    changeFrequency: path === "/" ? "weekly" : "monthly",
-    priority: path === "/" ? 1 : 0.7,
-  }));
+    const staticEntries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => ({
+      url: `${root}${path === "/" ? "" : path}`,
+      lastModified: now,
+      changeFrequency: path === "/" ? "weekly" : "monthly",
+      priority: path === "/" ? 1 : 0.7,
+    }));
 
-  const { items: notices } = await (async () => {
-    try {
-      return await listPosts("notice", { limit: 50 });
-    } catch {
-      // DB 연결 실패 등으로 공지 조회가 깨지면 사이트맵 전체 500이 되어 검색엔진이 가져오지 못함
-      return { items: MOCK_NOTICES.slice(0, 50), total: MOCK_NOTICES.length };
-    }
-  })();
-  const noticeEntries: MetadataRoute.Sitemap = notices.map((n) => {
-    const parsed = new Date(n.date);
-    const lastModified = Number.isNaN(parsed.getTime()) ? now : parsed;
-    return {
-      url: `${root}${communityNoticePath(n)}`,
-      lastModified,
-      changeFrequency: "weekly" as const,
+    const notices = MOCK_NOTICES.slice(0, 50);
+    const noticeEntries: MetadataRoute.Sitemap = notices.map((n) => {
+      const parsed = new Date(n.date);
+      const lastModified = Number.isNaN(parsed.getTime()) ? now : parsed;
+      return {
+        url: `${root}${communityNoticePath(n)}`,
+        lastModified,
+        changeFrequency: "weekly" as const,
+        priority: 0.65,
+      };
+    });
+
+    const labEntries: MetadataRoute.Sitemap = MOCK_LABS.map((l) => ({
+      url: `${root}/labs/${l.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    }));
+
+    const facultyEntries: MetadataRoute.Sitemap = MOCK_FACULTY.map((f) => ({
+      url: `${root}/faculty/${f.id}`,
+      lastModified: now,
+      changeFrequency: "monthly",
       priority: 0.65,
-    };
-  });
+    }));
 
-  const labEntries: MetadataRoute.Sitemap = MOCK_LABS.map((l) => ({
-    url: `${root}/labs/${l.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.75,
-  }));
-
-  const facultyEntries: MetadataRoute.Sitemap = MOCK_FACULTY.map((f) => ({
-    url: `${root}/faculty/${f.id}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.65,
-  }));
-
-  return [...staticEntries, ...noticeEntries, ...labEntries, ...facultyEntries];
+    return [...staticEntries, ...noticeEntries, ...labEntries, ...facultyEntries];
+  } catch (err) {
+    console.error("[sitemap] failed, serving minimal fallback", err);
+    const root = getPublicSiteRoot();
+    return [
+      {
+        url: root,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 1,
+      },
+    ];
+  }
 }
