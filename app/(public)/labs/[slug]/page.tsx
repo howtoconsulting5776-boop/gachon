@@ -9,6 +9,8 @@ import {
 } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import { AiTechEduCurriculumMatrix } from "@/components/labs/AiTechEduCurriculumMatrix";
+import { EduBizMarketingMatrix } from "@/components/labs/EduBizMarketingMatrix";
+import { EduBizSystemMatrix } from "@/components/labs/EduBizSystemMatrix";
 import { ResearchWritingRoadmap } from "@/components/labs/ResearchWritingRoadmap";
 
 interface Props {
@@ -52,7 +54,10 @@ export default function LabDetailPage({ params }: Props) {
   if (!lab) notFound();
   const lead = getLeadFacultyForLab(lab);
   const wideLab =
-    lab.slug === "ai-tech-edu" || lab.slug === "research-writing";
+    lab.slug === "ai-tech-edu" ||
+    lab.slug === "research-writing" ||
+    lab.slug === "academy" ||
+    lab.slug === "counseling-management";
 
   return (
     <div>
@@ -84,6 +89,16 @@ export default function LabDetailPage({ params }: Props) {
         {lab.slug === "ai-tech-edu" && (
           <section className="border-t border-gray-200 pt-10">
             <AiTechEduCurriculumMatrix />
+          </section>
+        )}
+        {lab.slug === "academy" && (
+          <section className="border-t border-gray-200 pt-10">
+            <EduBizMarketingMatrix />
+          </section>
+        )}
+        {lab.slug === "counseling-management" && (
+          <section className="border-t border-gray-200 pt-10">
+            <EduBizSystemMatrix />
           </section>
         )}
         <section>

@@ -27,8 +27,8 @@ export const MAIN_NAV: NavItem[] = [
     submenu: [
       { label: "청소년 R&E LAB", href: "/labs/rne" },
       { label: "진로진학 LAB", href: "/labs/career-guidance" },
-      { label: "에듀비즈니스 LAB", href: "/labs/academy" },
-      { label: "상담관리 LAB", href: "/labs/counseling-management" },
+      { label: "에듀비즈니스 마케팅 LAB", href: "/labs/academy" },
+      { label: "에듀비즈니스 시스템 LAB", href: "/labs/counseling-management" },
       { label: "AI 테크에듀 LAB", href: "/labs/ai-tech-edu" },
       { label: "연구논문 LAB", href: "/labs/research-writing" },
     ],
