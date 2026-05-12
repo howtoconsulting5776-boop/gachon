@@ -28,7 +28,7 @@ export default function FacultyListPage() {
                 className="block rounded-[0.67rem] border border-gray-200 p-6 transition-shadow hover:shadow-md break-keep"
               >
                 {f.portraitSrc ? (
-                  <div className="relative aspect-[4/5] w-full min-h-0 min-w-0 max-h-56 overflow-hidden rounded-lg bg-gachon-100">
+                  <div className="relative h-56 w-full min-h-0 min-w-0 overflow-hidden rounded-lg bg-gachon-100">
                     <FacultyPortrait
                       fillContainer
                       faculty={f}

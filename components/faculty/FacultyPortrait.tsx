@@ -37,9 +37,9 @@ export function FacultyPortrait(props: FacultyPortraitProps) {
   } = props;
   const fillContainer = "fillContainer" in props && props.fillContainer === true;
 
-  const objectPosition = faculty.portraitObjectPosition ?? "center 30%";
+  const objectPosition = faculty.portraitObjectPosition ?? "center top";
   const zoom = faculty.portraitZoom ?? 1;
-  const origin = faculty.portraitTransformOrigin ?? "center 22%";
+  const origin = faculty.portraitTransformOrigin ?? "center top";
   const alt = imageAlt ?? `${faculty.name} 교수`;
 
   const aspectClassName =
