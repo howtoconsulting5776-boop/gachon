@@ -95,9 +95,9 @@ export const MOCK_FACULTY: MockFaculty[] = [
     labSlug: "academy",
     bio: "교육기관의 경영·마케팅·인사·전략을 연구·실무 관점에서 통합해 에듀비즈니스 LAB과 상담관리 LAB을 이끕니다.",
     portraitSrc: "/faculty/2.jpg",
-    portraitObjectPosition: "center 48%",
-    portraitZoom: 0.9,
-    portraitTransformOrigin: "center 18%",
+    portraitObjectPosition: "center bottom",
+    portraitZoom: 1,
+    portraitTransformOrigin: "center bottom",
   },
   {
     id: "3",

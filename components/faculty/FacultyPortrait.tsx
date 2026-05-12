@@ -88,7 +88,7 @@ export function FacultyPortrait(props: FacultyPortraitProps) {
             alt={alt}
             fill
             priority={priority}
-            className="object-cover"
+            className="object-cover min-h-full min-w-full"
             style={{ objectPosition }}
             sizes={sizes}
           />
