@@ -16,7 +16,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!n || n.category !== "notice") {
     return { title: "공지" };
   }
-  return { title: n.title };
+  const description = n.excerpt.slice(0, 155);
+  const path = communityNoticePath(n);
+  return {
+    title: n.title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "article",
+      title: n.title,
+      description,
+      url: path,
+      publishedTime: `${n.date}T09:00:00+09:00`,
+    },
+    twitter: {
+      card: "summary",
+      title: n.title,
+      description,
+    },
+  };
 }
 
 export default async function NoticeDetailPage({ params }: Props) {

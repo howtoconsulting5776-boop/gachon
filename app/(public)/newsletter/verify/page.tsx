@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { verifyNewsletterSubscriberByToken } from "@/lib/newsletter/verify-subscriber";
@@ -6,7 +7,10 @@ interface Props {
   searchParams: { token?: string };
 }
 
-export const metadata = { title: "뉴스레터 구독 확인" };
+export const metadata: Metadata = {
+  title: "뉴스레터 구독 확인",
+  robots: { index: false, follow: false },
+};
 
 export default async function NewsletterVerifyPage({ searchParams }: Props) {
   const result = await verifyNewsletterSubscriberByToken(searchParams.token);

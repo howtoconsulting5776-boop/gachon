@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Hero } from "@/components/sections/Hero";
 import { CoreValues } from "@/components/sections/CoreValues";
@@ -9,6 +10,19 @@ import { LatestNewsSkeleton } from "@/components/sections/LatestNewsSkeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: { absolute: "가천대학교 경영대학원 에듀컨설팅 전공" },
+  description:
+    "교육을 경영하라, 미래를 설계하라. 경영대학원 소속 에듀컨설팅 전공의 공식 홈페이지 — 6개 LAB, 입학 안내, 교수진을 한곳에서 확인하세요.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    url: "/",
+    title: "가천대학교 경영대학원 에듀컨설팅 전공",
+    description:
+      "교육을 경영하라, 미래를 설계하라. LAB·입학·교수진 정보를 제공하는 공식 사이트입니다.",
+  },
+};
 
 export default async function HomePage() {
   return (

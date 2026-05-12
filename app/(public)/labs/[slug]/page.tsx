@@ -21,7 +21,26 @@ export function generateMetadata({ params }: Props): Metadata {
   const { slug } = params;
   const lab = getLabBySlug(slug);
   if (!lab) return { title: "LAB" };
-  return { title: lab.name };
+  const path = `/labs/${lab.slug}`;
+  const description = `${lab.tagline} ${lab.description}`.slice(0, 155);
+  const ogImage = `/images/labs/${lab.slug}.jpg`;
+  return {
+    title: lab.name,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      title: lab.name,
+      description: lab.tagline,
+      url: path,
+      images: [{ url: ogImage, alt: `${lab.name} 대표 이미지` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: lab.name,
+      description: lab.tagline,
+      images: [ogImage],
+    },
+  };
 }
 
 export default function LabDetailPage({ params }: Props) {

@@ -17,7 +17,28 @@ export function generateMetadata({ params }: Props): Metadata {
   const { id } = params;
   const f = getFacultyById(id);
   if (!f) return { title: "교수 소개" };
-  return { title: f.name };
+  const path = `/faculty/${f.id}`;
+  const description = f.bio.slice(0, 155);
+  const ogImages = f.portraitSrc
+    ? [{ url: f.portraitSrc, alt: `${f.name} 교수` }]
+    : undefined;
+  return {
+    title: f.name,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      title: `${f.name} 교수`,
+      description,
+      url: path,
+      ...(ogImages ? { images: ogImages } : {}),
+    },
+    twitter: {
+      card: ogImages ? "summary_large_image" : "summary",
+      title: f.name,
+      description,
+      ...(ogImages ? { images: [f.portraitSrc!] } : {}),
+    },
+  };
 }
 
 export default function FacultyDetailPage({ params }: Props) {

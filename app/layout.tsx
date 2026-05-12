@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
 import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo/defaults";
 import { getPublicSiteRoot } from "@/lib/site-url";
 
 const inter = Inter({
@@ -42,12 +43,14 @@ export const metadata: Metadata = {
     title: "가천대학교 경영대학원 에듀컨설팅 전공",
     description:
       "교육을 경영하라, 미래를 설계하라. 경영대학원 소속 에듀컨설팅 전공의 공식 안내와 LAB·입학 정보를 제공합니다.",
+    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: "가천대학교 경영대학원 에듀컨설팅 전공",
     description:
       "교육과 경영의 융합으로 교육 산업의 다음 세대 리더를 양성하는 경영대학원 에듀컨설팅 전공 공식 홈페이지입니다.",
+    images: [DEFAULT_OG_IMAGE.url],
   },
 };
 
