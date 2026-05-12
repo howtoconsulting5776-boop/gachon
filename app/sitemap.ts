@@ -7,6 +7,9 @@ import { getPublicSiteRoot } from "@/lib/site-url";
  * 공지 URL은 Prisma/DB·Edge 이슈로 500이 나지 않도록 목 데이터만 사용합니다.
  * (페이지 `/community/notice`는 DB 연동 유지. 검색용 URL 목록은 정적·안정 우선.)
  */
+export const dynamic = "force-static";
+export const revalidate = 86400;
+
 const STATIC_PATHS = [
   "/",
   "/about/greeting",
