@@ -56,10 +56,10 @@ const posts = [
   },
   {
     id: "q1",
-    publicSlug: "q1-evening-class-schedule",
+    publicSlug: "q1-friday-morning-class-schedule",
     category: "qna",
-    title: "야간 수업 주차는 어떻게 되나요?",
-    excerpt: "평일 야간과 토요일 배정 기준을 알고 싶습니다.",
+    title: "수업은 어떤 요일에 진행되나요?",
+    excerpt: "주1 금요일 오전(9:00~14:40) 트랙 운영 기준을 알고 싶습니다.",
     content: null,
     author: null,
     publishedAt: new Date("2026-04-15T00:00:00.000Z"),

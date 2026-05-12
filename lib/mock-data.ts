@@ -263,10 +263,10 @@ export const MOCK_BOARD: MockPost[] = [
 export const MOCK_QNA: MockPost[] = [
   {
     id: "q1",
-    publicSlug: "q1-evening-class-schedule",
+    publicSlug: "q1-friday-morning-class-schedule",
     category: "qna",
-    title: "야간 수업 주차는 어떻게 되나요?",
-    excerpt: "평일 야간과 토요일 배정 기준을 알고 싶습니다.",
+    title: "수업은 어떤 요일에 진행되나요?",
+    excerpt: "주1 금요일 오전(9:00~14:40) 트랙 운영 기준을 알고 싶습니다.",
     date: "2026-04-15",
   },
 ];
@@ -490,7 +490,7 @@ export const MOCK_FAQ: MockFaq[] = [
     category: "학사",
     question: "수업은 주로 언제 진행되나요?",
     answer:
-      "평일 야간 및 토요일에 집중 배정됩니다. 학기별 시간표는 사전 안내됩니다.",
+      "주 1회 금요일 오전(9:00~14:40) 트랙으로 운영되어 현직을 유지하면서 학위를 이수할 수 있습니다. 학기별 시간표는 사전 안내됩니다.",
   },
   {
     id: "f3",
@@ -588,7 +588,7 @@ export const MOCK_FAQ: MockFaq[] = [
     category: "캠퍼스",
     question: "주차나 대중교통 이용은 어떻게 되나요?",
     answer:
-      "캠퍼스별 주차·셔틀 안내는 학교 홈페이지와 캠퍼스 안내를 참고해 주세요. 야간 수업 시에도 안전한 이동을 권장합니다.",
+      "캠퍼스별 주차·셔틀 안내는 학교 홈페이지와 캠퍼스 안내를 참고해 주세요. 금요일 오전 수업 등·하교 시 여유 있는 이동을 권장합니다.",
   },
   {
     id: "f17",

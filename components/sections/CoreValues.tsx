@@ -13,7 +13,7 @@ const items = [
     icon: FlaskConical,
   },
   {
-    title: "현직을 위한 주1 목요일 오전 트랙",
+    title: "현직을 위한 주1 금요일 오전 트랙",
     body: "평일 오전 수업으로 현재 사업 직장을 유지하면서 학위를 이수할 수 있습니다.",
     icon: Clock,
   },
