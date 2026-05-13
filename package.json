@@ -27,6 +27,7 @@
     "images:optimize": "node scripts/optimize-public-images.mjs",
     "seo:verify": "node scripts/verify-public-seo.mjs",
     "vercel:set-site-url": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/set-vercel-site-url.ps1",
+    "resend:set": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/set-resend-keys.ps1",
     "deploy:verify": "npm run deploy && npm run seo:verify",
     "github:publish": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-to-github.ps1",
     "github:login": "powershell -NoProfile -Command \"& 'C:\\Program Files\\GitHub CLI\\gh.exe' auth login\"",
