@@ -42,6 +42,7 @@ type FormValues = z.infer<typeof schema>;
 export function InquiryForm() {
   const [done, setDone] = React.useState(false);
   const successRef = React.useRef<HTMLDivElement>(null);
+  const errorRef = React.useRef<HTMLParagraphElement>(null);
 
   const {
     register,
@@ -71,43 +72,92 @@ export function InquiryForm() {
   React.useEffect(() => {
     if (done && successRef.current) {
       successRef.current.focus();
+      successRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [done]);
 
-  const onSubmit = handleSubmit(async (data) => {
-    setSubmitError(null);
-    const res = await fetch("/api/v1/inquiries", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: data.name.trim(),
-        phone: data.phone,
-        email: data.email.trim(),
-        interestLab: data.interestLab || undefined,
-        message: data.message?.trim() || undefined,
-        privacyConsent: data.privacyConsent,
-        marketingConsent: data.marketingConsent ?? false,
-      }),
-    });
-    const json = (await res.json()) as {
-      success: boolean;
-      error?: { message?: string; code?: string };
-    };
-    if (!json.success) {
-      setSubmitError(json.error?.message ?? "제출에 실패했습니다.");
-      return;
+  React.useEffect(() => {
+    if (submitError && errorRef.current) {
+      errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-    setDone(true);
-    reset({
-      name: "",
-      phone: "",
-      email: "",
-      privacyConsent: false,
-      marketingConsent: false,
-      interestLab: "",
-      message: "",
-    });
-  });
+  }, [submitError]);
+
+  const onSubmit = handleSubmit(
+    async (data) => {
+      setSubmitError(null);
+      try {
+        const res = await fetch("/api/v1/inquiries", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: data.name.trim(),
+            phone: data.phone,
+            email: data.email.trim(),
+            interestLab: data.interestLab || undefined,
+            message: data.message?.trim() || undefined,
+            privacyConsent: data.privacyConsent,
+            marketingConsent: data.marketingConsent ?? false,
+          }),
+        });
+
+        let json:
+          | {
+              success: boolean;
+              error?: { message?: string; code?: string };
+            }
+          | null = null;
+        try {
+          json = await res.json();
+        } catch {
+          // 서버가 JSON이 아닌 응답(HTML 에러 페이지 등)을 반환한 경우
+        }
+
+        if (!res.ok || !json?.success) {
+          const msg =
+            json?.error?.message ??
+            `제출에 실패했습니다. (HTTP ${res.status}) 잠시 후 다시 시도하거나 bear5776@gachon.ac.kr 로 직접 문의해 주세요.`;
+          setSubmitError(msg);
+          if (typeof window !== "undefined") {
+            console.error("[InquiryForm] submit failed:", res.status, json);
+          }
+          return;
+        }
+
+        setDone(true);
+        reset({
+          name: "",
+          phone: "",
+          email: "",
+          privacyConsent: false,
+          marketingConsent: false,
+          interestLab: "",
+          message: "",
+        });
+      } catch (err) {
+        const msg =
+          err instanceof Error ? err.message : "네트워크 오류가 발생했습니다.";
+        setSubmitError(
+          `제출 중 오류가 발생했습니다: ${msg}. 잠시 후 다시 시도하거나 bear5776@gachon.ac.kr 로 직접 문의해 주세요.`
+        );
+        if (typeof window !== "undefined") {
+          console.error("[InquiryForm] submit threw:", err);
+        }
+      }
+    },
+    (formErrors) => {
+      // 유효성 검사 실패 시: 첫 번째 오류 필드를 찾아 화면 상단에 안내한다.
+      if (typeof window !== "undefined") {
+        console.warn("[InquiryForm] validation failed:", formErrors);
+      }
+      const first = Object.values(formErrors)[0];
+      const message =
+        (first && typeof first === "object" && "message" in first
+          ? (first as { message?: string }).message
+          : undefined) ??
+        "필수 항목을 확인해 주세요. (이름·연락처·이메일·개인정보 동의)";
+      setSubmitError(message);
+    }
+  );
 
   return (
     <form
@@ -117,8 +167,10 @@ export function InquiryForm() {
     >
       {submitError && (
         <p
+          ref={errorRef}
+          tabIndex={-1}
           role="alert"
-          aria-live="polite"
+          aria-live="assertive"
           className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900 break-keep"
         >
           {submitError}
