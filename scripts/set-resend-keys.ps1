@@ -9,7 +9,7 @@
   프로덕션 재배포를 트리거합니다.
 
 .PARAMETER ApiKey
-  Resend 대시보드 → API Keys 에서 발급한 키. 형식: re_xxxxxxxxxxxx
+  Resend 대시보드의 API Keys 메뉴에서 발급한 키. 형식: re_xxxxxxxxxxxx
 
 .PARAMETER FromEmail
   (선택) 발신자 표기. 도메인 미인증 시 비워두면 onboarding@resend.dev 사용.
@@ -60,9 +60,9 @@ function Set-VercelEnv {
     [string] $EnvScope = "production"
   )
 
-  Write-Host "→ Vercel $EnvScope: $Name 설정"
+  Write-Host ("[set] Vercel {0}: {1} 등록" -f $EnvScope, $Name)
 
-  $args = @(
+  $cmdArgs = @(
     "vercel@latest", "env", "add",
     $Name, $EnvScope,
     "--value", $Value,
@@ -71,12 +71,12 @@ function Set-VercelEnv {
   )
 
   if ($env:VERCEL_TOKEN) {
-    $args += @("-t", $env:VERCEL_TOKEN)
+    $cmdArgs += @("-t", $env:VERCEL_TOKEN)
   }
 
-  & npx @args
+  & npx @cmdArgs
   if ($LASTEXITCODE -ne 0) {
-    Write-Error "$Name 설정 실패 (vercel CLI exit $LASTEXITCODE)"
+    Write-Error ("{0} 설정 실패 (vercel CLI exit {1})" -f $Name, $LASTEXITCODE)
     exit $LASTEXITCODE
   }
 }
@@ -86,14 +86,14 @@ Set-VercelEnv -Name "RESEND_API_KEY" -Value $ApiKey -EnvScope "production"
 if ($FromEmail -and $FromEmail.Trim() -ne "") {
   Set-VercelEnv -Name "RESEND_FROM_EMAIL" -Value $FromEmail.Trim() -EnvScope "production"
 } else {
-  Write-Host "ℹ FromEmail 미제공 → 발신자는 onboarding@resend.dev 가 사용됩니다 (도메인 인증 없이도 동작, 다만 스팸함 확인 권장)."
+  Write-Host "[info] FromEmail 미제공: 발신자는 onboarding@resend.dev 가 사용됩니다 (도메인 인증 없이도 동작, 다만 스팸함 확인 권장)."
 }
 
 Write-Host ""
 Write-Host "환경변수 등록 완료."
 
 if ($SkipRedeploy) {
-  Write-Host "ℹ -SkipRedeploy 지정됨 → 재배포 생략. 직접 'npm run deploy' 실행 필요."
+  Write-Host "[info] -SkipRedeploy 지정됨: 재배포 생략. 직접 'npm run deploy' 실행 필요."
   exit 0
 }
 
@@ -101,7 +101,7 @@ Write-Host ""
 Write-Host "변경사항을 적용하기 위해 프로덕션 재배포를 시작합니다..."
 & npx vercel@latest --prod --yes
 if ($LASTEXITCODE -ne 0) {
-  Write-Error "재배포 실패 (vercel CLI exit $LASTEXITCODE)"
+  Write-Error ("재배포 실패 (vercel CLI exit {0})" -f $LASTEXITCODE)
   exit $LASTEXITCODE
 }
 
