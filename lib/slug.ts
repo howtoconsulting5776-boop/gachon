@@ -16,3 +16,9 @@ export function makePostPublicSlug(id: string, title: string): string {
   const tail = base.length > 0 ? base : `post-${randomBytes(3).toString("hex")}`;
   return `${id}-${tail}`.replace(/-+/g, "-").toLowerCase();
 }
+
+export function makeFacultyColumnPublicSlug(id: string, title: string): string {
+  const base = slugifyAscii(title);
+  const tail = base.length > 0 ? base : `column-${randomBytes(3).toString("hex")}`;
+  return `${id}-${tail}`.replace(/-+/g, "-").toLowerCase();
+}

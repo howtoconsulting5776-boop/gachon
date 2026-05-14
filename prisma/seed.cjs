@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
+const fs = require("node:fs");
+const path = require("node:path");
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
@@ -118,6 +120,59 @@ async function main() {
   }
   // eslint-disable-next-line no-console
   console.log(`Seeded ${events.length} events.`);
+
+  function facultyColumnFromMd(relPath, meta) {
+    const mdPath = path.join(__dirname, "..", "content", "faculty-columns", relPath);
+    const content = fs.readFileSync(mdPath, "utf8");
+    const title = content.split("\n")[0].replace(/^#\s*/, "").trim();
+    const excerptRaw = content
+      .replace(/^#\s+[^\n]+\n+/, "")
+      .replace(/\n+/g, " ")
+      .trim();
+    const excerpt =
+      excerptRaw.length > 220 ? `${excerptRaw.slice(0, 220)}…` : excerptRaw;
+    return {
+      id: meta.id,
+      facultyId: meta.facultyId,
+      publicSlug: meta.publicSlug,
+      title,
+      excerpt,
+      content: content.trim(),
+      publishedAt: new Date(meta.publishedAtIso),
+    };
+  }
+
+  const facultyColumns = [
+    facultyColumnFromMd("hagwon-golden-time-ai-marketing-automation.md", {
+      id: "fcb_jang_002",
+      facultyId: "3",
+      publicSlug: "hagwon-golden-time-ai-marketing-automation",
+      publishedAtIso: "2026-05-14T00:00:00.000Z",
+    }),
+    facultyColumnFromMd("jang-ai-era-bosup-system.md", {
+      id: "fcb_jang_001",
+      facultyId: "3",
+      publicSlug: "jang-ai-era-bosup-hagwon-system",
+      publishedAtIso: "2026-05-13T00:00:00.000Z",
+    }),
+  ];
+
+  for (const fc of facultyColumns) {
+    await prisma.facultyColumn.upsert({
+      where: { id: fc.id },
+      create: fc,
+      update: {
+        facultyId: fc.facultyId,
+        publicSlug: fc.publicSlug,
+        title: fc.title,
+        excerpt: fc.excerpt,
+        content: fc.content,
+        publishedAt: fc.publishedAt,
+      },
+    });
+  }
+  // eslint-disable-next-line no-console
+  console.log(`Seeded ${facultyColumns.length} faculty columns.`);
 }
 
 main()

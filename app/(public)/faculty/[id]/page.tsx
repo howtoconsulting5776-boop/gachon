@@ -4,10 +4,13 @@ import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { getFacultyById, MOCK_LABS } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
+import { facultyColumnPath, listFacultyColumns } from "@/lib/data/faculty-columns";
 
 interface Props {
   params: { id: string };
 }
+
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   return [{ id: "1" }, { id: "2" }, { id: "3" }];
@@ -41,7 +44,7 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-export default function FacultyDetailPage({ params }: Props) {
+export default async function FacultyDetailPage({ params }: Props) {
   const { id } = params;
   const f = getFacultyById(id);
   if (!f) notFound();
@@ -49,6 +52,8 @@ export default function FacultyDetailPage({ params }: Props) {
   const lab = f.labSlug
     ? MOCK_LABS.find((l) => l.slug === f.labSlug)
     : undefined;
+
+  const columns = await listFacultyColumns(f.id, { limit: 5 });
 
   return (
     <div>
@@ -74,6 +79,39 @@ export default function FacultyDetailPage({ params }: Props) {
             </Button>
           </div>
         )}
+
+        <section className="mt-14 border-t border-gray-200 pt-10" aria-labelledby="faculty-columns-heading">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <h2 id="faculty-columns-heading" className="text-lg font-semibold text-gachon-900 break-keep">
+              교수 칼럼
+            </h2>
+            {columns.length > 0 && (
+              <Link
+                href={`/faculty/${f.id}/columns`}
+                className="text-sm font-medium text-gachon-600 hover:underline break-keep"
+              >
+                전체 보기
+              </Link>
+            )}
+          </div>
+          {columns.length === 0 ? (
+            <p className="mt-3 text-sm text-gray-500 break-keep">등록된 칼럼이 없습니다.</p>
+          ) : (
+            <ul className="mt-4 space-y-3">
+              {columns.map((c) => (
+                <li key={c.id}>
+                  <Link
+                    href={facultyColumnPath(f.id, c.publicSlug)}
+                    className="block rounded-lg border border-gray-100 bg-gray-50/80 px-4 py-3 transition-colors hover:border-gachon-200 hover:bg-gachon-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gachon-500"
+                  >
+                    <span className="text-xs text-gray-500">{c.date}</span>
+                    <span className="mt-1 block font-medium text-gachon-900 break-keep">{c.title}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
     </div>
   );

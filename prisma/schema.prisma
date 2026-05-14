@@ -34,6 +34,22 @@ model Post {
   @@map("posts")
 }
 
+/// 교수진 칼럼·칼럼형 게시 (`/faculty/[id]/columns/[publicSlug]`)
+model FacultyColumn {
+  id           String   @id
+  facultyId    String   @map("faculty_id") @db.VarChar(32)
+  publicSlug   String   @unique @map("public_slug") @db.VarChar(255)
+  title        String
+  excerpt      String   @db.Text
+  content      String   @db.Text
+  publishedAt  DateTime @default(now()) @map("published_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([facultyId, publishedAt(sort: Desc)])
+  @@map("faculty_columns")
+}
+
 model AdmissionInquiry {
   id               String   @id @default(cuid())
   name             String

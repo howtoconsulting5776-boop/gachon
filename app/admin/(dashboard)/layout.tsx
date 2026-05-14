@@ -14,6 +14,7 @@ const NAV = [
   { href: "/admin", label: "대시보드" },
   { href: "/admin/inquiries", label: "입학 상담" },
   { href: "/admin/posts", label: "게시글" },
+  { href: "/admin/faculty-columns", label: "교수 칼럼" },
   { href: "/admin/events", label: "설명회" },
   { href: "/admin/audit-logs", label: "감사 로그" },
 ];

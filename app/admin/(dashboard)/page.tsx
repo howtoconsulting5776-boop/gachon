@@ -15,16 +15,18 @@ export default async function AdminDashboardPage() {
     );
   }
 
-  const [posts, inquiries, events, eventRegistrations, verifiedNl] = await Promise.all([
+  const [posts, inquiries, events, eventRegistrations, verifiedNl, facultyColumns] = await Promise.all([
     prisma.post.count(),
     prisma.admissionInquiry.count(),
     prisma.event.count(),
     prisma.eventRegistration.count(),
     prisma.newsletterSubscriber.count({ where: { verified: true, active: true } }),
+    prisma.facultyColumn.count(),
   ]);
 
   const cards = [
     { label: "게시글", value: posts, href: "/admin/posts" },
+    { label: "교수 칼럼", value: facultyColumns, href: "/admin/faculty-columns" },
     { label: "입학 상담", value: inquiries, href: "/admin/inquiries" },
     { label: "설명회", value: events, href: "/admin/events" },
     { label: "설명회 등록", value: eventRegistrations, href: "/admin/events" },

@@ -2,6 +2,8 @@
  * Supabase .env 의 [YOUR-PASSWORD] 치환 후 prisma db push + seed
  * 사용: npm run db:setup -- "데이터베이스비밀번호"
  * 또는: set SUPABASE_DB_PASSWORD=... (cmd) / $env:SUPABASE_DB_PASSWORD="..." (pwsh) 후 npm run db:setup
+ *
+ * 프로덕션(Vercel) 배포 시 스키마는 scripts/vercel-build.cjs 에서 migrate deploy + db push 로 맞춥니다.
  */
 const fs = require("fs");
 const path = require("path");

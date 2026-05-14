@@ -4,6 +4,8 @@
 #
 # Vercel 대시보드에서 GitHub 저장소를 연결해 두었다면, 푸시만으로도 자동 빌드·배포됩니다.
 # 그 경우 이 워크플로는 중복 배포가 될 수 있으니 하나만 사용하세요.
+# Build Command 를 대시보드에서 덮어썼다면 `npm run vercel-build`(또는 vercel.json 기본)로
+# Prisma 마이그레이션·스키마 동기화가 포함되도록 맞추세요.
 
 name: Deploy to Vercel (production)
 
