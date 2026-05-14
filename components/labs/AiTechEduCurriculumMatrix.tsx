@@ -98,10 +98,12 @@ export function AiTechEduCurriculumMatrix() {
         >
           입체적 융합 커리큘럼
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-gray-600">
+        <p className="mt-2 text-sm leading-relaxed text-gray-600 break-keep">
           세 가지 종단(적용 도메인)과 일곱 가지 횡단(기술 방법론)이 교차합니다.
           가로는 기술 축, 세로는 현장 도메인 축입니다. 셀에 포인터를 올리면 같은
-          행·열이 함께 강조됩니다.
+          행·열이 함께 강조됩니다. 위 본문에서 다루는 것처럼 린 스타트업·애자일
+          운영·OKR·디자인 씽킹은 이 매트릭스와 병행해, 가설 검증과 우선순위
+          정렬을 실무 프로젝트에 묶어 가는 흐름으로 이어집니다.
         </p>
       </div>
 

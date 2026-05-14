@@ -11,6 +11,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
+/** LAB 카피(`MOCK_LABS`)가 배포 직후에도 최신으로 보이도록 정적 HTML 고정 방지 */
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: { absolute: "가천대학교 경영대학원 에듀컨설팅 전공" },
   description:

@@ -4,6 +4,8 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { MOCK_LABS } from "@/lib/mock-data";
 import { ArrowRight } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "연구실",
 };
