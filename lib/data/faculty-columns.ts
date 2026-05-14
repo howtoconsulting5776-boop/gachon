@@ -1,6 +1,7 @@
 import "server-only";
 import fs from "node:fs";
 import path from "node:path";
+import { unstable_noStore as noStore } from "next/cache";
 import type { FacultyColumn as PrismaFacultyColumn } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { isDatabaseConfigured } from "@/lib/data/posts";
@@ -89,6 +90,7 @@ function bundledColumnsForFaculty(facultyId: string): FacultyColumnDto[] {
 
 /** DB 시드 없이도 공개에 쓰이는 저장소 마크다운 칼럼(어드민·점검용). */
 export function listBundledFacultyColumns(): FacultyColumnDto[] {
+  noStore();
   return loadMockColumns();
 }
 
@@ -105,6 +107,7 @@ export async function listFacultyColumns(
   facultyId: string,
   opts?: { limit?: number }
 ): Promise<FacultyColumnDto[]> {
+  noStore();
   const limit = opts?.limit ?? 50;
 
   if (!isDatabaseConfigured()) {
@@ -127,6 +130,7 @@ export async function getFacultyColumnBySlug(
   facultyId: string,
   publicSlug: string
 ): Promise<FacultyColumnDto | null> {
+  noStore();
   if (!isDatabaseConfigured()) {
     return (
       loadMockColumns().find(
@@ -147,6 +151,7 @@ export async function getFacultyColumnBySlug(
 }
 
 export async function getFacultyColumnById(id: string): Promise<FacultyColumnDto | null> {
+  noStore();
   if (!isDatabaseConfigured()) {
     return loadMockColumns().find((c) => c.id === id) ?? null;
   }

@@ -10,11 +10,8 @@ interface Props {
   params: { id: string };
 }
 
-export const revalidate = 60;
-
-export async function generateStaticParams() {
-  return [{ id: "1" }, { id: "2" }, { id: "3" }];
-}
+/** 칼럼 목록·DB/파일 폴백이 빌드 시점에 고정되지 않도록 */
+export const dynamic = "force-dynamic";
 
 export function generateMetadata({ params }: Props): Metadata {
   const { id } = params;

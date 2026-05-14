@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/layout/PageHeader";
-import {
-  getLabBySlug,
-  getLeadFacultyForLab,
-  MOCK_LABS,
-} from "@/lib/mock-data";
+import { getLabBySlug, getLeadFacultyForLab } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import { AiTechEduCurriculumMatrix } from "@/components/labs/AiTechEduCurriculumMatrix";
 import { EduBizMarketingMatrix } from "@/components/labs/EduBizMarketingMatrix";
@@ -17,9 +13,8 @@ interface Props {
   params: { slug: string };
 }
 
-export async function generateStaticParams() {
-  return MOCK_LABS.map((l) => ({ slug: l.slug }));
-}
+/** 배포 직후에도 최신 `mock-data` 본문이 반영되도록 정적 캐시 고정 방지 */
+export const dynamic = "force-dynamic";
 
 export function generateMetadata({ params }: Props): Metadata {
   const { slug } = params;
