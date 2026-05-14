@@ -82,6 +82,11 @@ function loadMockColumns(): FacultyColumnDto[] {
   return cachedMockColumns;
 }
 
+/** `content/faculty-columns`에 동봉된 기본 칼럼(교수 ID별) */
+function bundledColumnsForFaculty(facultyId: string): FacultyColumnDto[] {
+  return loadMockColumns().filter((c) => c.facultyId === facultyId);
+}
+
 export function facultyColumnPath(facultyId: string, publicSlug: string): string {
   return `/faculty/${facultyId}/columns/${publicSlug}`;
 }
@@ -98,9 +103,7 @@ export async function listFacultyColumns(
   const limit = opts?.limit ?? 50;
 
   if (!isDatabaseConfigured()) {
-    return loadMockColumns()
-      .filter((c) => c.facultyId === facultyId)
-      .slice(0, limit);
+    return bundledColumnsForFaculty(facultyId).slice(0, limit);
   }
 
   const rows = await prisma.facultyColumn.findMany({
@@ -108,7 +111,11 @@ export async function listFacultyColumns(
     orderBy: { publishedAt: "desc" },
     take: limit,
   });
-  return rows.map(columnToDto);
+  if (rows.length > 0) {
+    return rows.map(columnToDto);
+  }
+  // 프로덕션 등 DB는 연결됐으나 시드가 없어 테이블이 비어 있는 경우
+  return bundledColumnsForFaculty(facultyId).slice(0, limit);
 }
 
 export async function getFacultyColumnBySlug(
@@ -126,7 +133,12 @@ export async function getFacultyColumnBySlug(
   const row = await prisma.facultyColumn.findFirst({
     where: { facultyId, publicSlug },
   });
-  return row ? columnToDto(row) : null;
+  if (row) return columnToDto(row);
+  return (
+    loadMockColumns().find(
+      (c) => c.facultyId === facultyId && c.publicSlug === publicSlug
+    ) ?? null
+  );
 }
 
 export async function getFacultyColumnById(id: string): Promise<FacultyColumnDto | null> {
@@ -134,5 +146,6 @@ export async function getFacultyColumnById(id: string): Promise<FacultyColumnDto
     return loadMockColumns().find((c) => c.id === id) ?? null;
   }
   const row = await prisma.facultyColumn.findUnique({ where: { id } });
-  return row ? columnToDto(row) : null;
+  if (row) return columnToDto(row);
+  return loadMockColumns().find((c) => c.id === id) ?? null;
 }
