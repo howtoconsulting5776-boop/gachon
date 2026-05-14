@@ -87,6 +87,11 @@ function bundledColumnsForFaculty(facultyId: string): FacultyColumnDto[] {
   return loadMockColumns().filter((c) => c.facultyId === facultyId);
 }
 
+/** DB 시드 없이도 공개에 쓰이는 저장소 마크다운 칼럼(어드민·점검용). */
+export function listBundledFacultyColumns(): FacultyColumnDto[] {
+  return loadMockColumns();
+}
+
 export function facultyColumnPath(facultyId: string, publicSlug: string): string {
   return `/faculty/${facultyId}/columns/${publicSlug}`;
 }

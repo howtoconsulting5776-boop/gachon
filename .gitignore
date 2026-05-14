@@ -32,6 +32,12 @@ yarn-error.log*
 
 # 로컬에만 둔 초상 중복 파일 (정본은 public/faculty/)
 /박인오.jpg
+/박인오.png
+/장의웅.png
+/원영란.jpg
+/원영란.png
+/에듀비즈니스 마케팅 LAB 최종 기획안.pdf
+/에듀비즈니스 시스템 LAB 최종 기획안.pdf
 
 # typescript
 *.tsbuildinfo
